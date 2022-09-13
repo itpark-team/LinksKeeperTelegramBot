@@ -2,5 +2,7 @@
 
 public class Denis
 {
-    
+    public static void HUI()
+    {
+    }
 }
