@@ -1,6 +1,6 @@
 namespace LinksKeeperTelegramBot;
 
-public class ASadsdsarfesdgvdfabghnjuifdzpvjidClass
+public class AssClass
 {
     public string Ass { get; set; }
 }
