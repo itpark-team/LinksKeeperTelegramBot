@@ -3,4 +3,4 @@
 Console.WriteLine("Hello, World!");
 
 //sdsdsdsdsdsdsdsdsdsddfdfdsf
-Console.ReadKey();// ыыыыыыы аааааааа уууууууууу
+Console.ReadKey();// ыыыыыыы аааааааа ууууууууууddddd
