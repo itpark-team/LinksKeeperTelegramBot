@@ -6,14 +6,17 @@ namespace LinksKeeperTelegramBot.Service;
 
 public class LogicManager
 {
-    private Dictionary<State, Func<int>> _stateLogicPairs;
+    private Dictionary<State, Func<long, TransmittedData, Update, ITelegramBotClient, CancellationToken>>
+        _stateLogicPairs;
 
     public LogicManager()
     {
-        _stateLogicPairs = new Dictionary<State, Func<int>>();
+        _stateLogicPairs =
+            new Dictionary<State, Func<long, TransmittedData, Update, ITelegramBotClient, CancellationToken>>();
     }
 
-    public Task ProcessBotUpdate(long chatId, TransmittedData transmittedData, Update update, ITelegramBotClient botClient, CancellationToken cancellationToken)
+    public Task ProcessBotUpdate(long chatId, TransmittedData transmittedData, Update update,
+        ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
         return null;
     }
