@@ -7,12 +7,12 @@ namespace LinksKeeperTelegramBot.Router;
 public class ChatsRouter
 {
     private Dictionary<long, TransmittedData> _chatTransmittedDataPairs;
-    private LogicManager _logicManager;
+    private ServicesManager _servicesManager;
 
     public ChatsRouter()
     {
         _chatTransmittedDataPairs = new Dictionary<long, TransmittedData>();
-        _logicManager = new LogicManager();
+        _servicesManager = new ServicesManager();
     }
 
     public Task Route(long chatId, Update update, ITelegramBotClient botClient, CancellationToken cancellationToken)
@@ -24,6 +24,6 @@ public class ChatsRouter
 
         TransmittedData transmittedData = _chatTransmittedDataPairs[chatId];
 
-        return _logicManager.ProcessBotUpdate(chatId, transmittedData, update, botClient, cancellationToken);
+        return _servicesManager.ProcessBotUpdate(chatId, transmittedData, update, botClient, cancellationToken);
     }
 }

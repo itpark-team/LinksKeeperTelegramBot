@@ -1,6 +1,6 @@
 namespace LinksKeeperTelegramBot.Service.MainMenu;
 
-public class MainMenuLogic
+public class MainMenuService
 {
     
 }

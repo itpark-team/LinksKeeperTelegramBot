@@ -1,6 +1,6 @@
 namespace LinksKeeperTelegramBot.Service.Links;
 
-public class LinksLogic
+public class LinksService
 {
     
 }
