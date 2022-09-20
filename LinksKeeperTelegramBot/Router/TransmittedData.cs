@@ -4,7 +4,7 @@ namespace LinksKeeperTelegramBot.Router;
 
 public class TransmittedData
 {
-    public State State { get; }
+    public State State { get; set; }
     public DataStorage DataStorage { get; }
 
     public TransmittedData()

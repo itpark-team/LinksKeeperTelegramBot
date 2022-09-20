@@ -19,19 +19,32 @@ public class BotRequestHandlers
         CancellationToken cancellationToken)
     {
         long chatId = 0;
+        bool canRoute = false;
 
         switch (update.Type)
         {
             case UpdateType.Message:
-                chatId = update.Message.Chat.Id;
+                if (update.Message != null)
+                {
+                    canRoute = true;
+                    chatId = update.Message.Chat.Id;
+                }
                 break;
 
             case UpdateType.CallbackQuery:
-                chatId = update.CallbackQuery.Message.Chat.Id;
+                if (update.CallbackQuery != null)
+                {
+                    canRoute = true;
+                    chatId = update.CallbackQuery.Message.Chat.Id;
+                }
+
                 break;
         }
 
-        await _chatsRouter.Route(chatId, update, botClient, cancellationToken);
+        if (canRoute)
+        {
+            await _chatsRouter.Route(chatId, update, botClient, cancellationToken);
+        }
     }
 
     public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,
