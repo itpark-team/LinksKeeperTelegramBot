@@ -4,7 +4,7 @@ public enum State
 {
     WaitingCommandStart,
     WaitingClickOnInlineButtonInMenuMain,
-    WaitingClickOnInlineButtonInMenuAddChoosing,
+    WaitingClickOnInlineButtonInMenuAdd,
     WaitingInputLinkUrlForAdd,
     WaitingInputLinkDescriptionForAdd,
     WaitingClickOnInlineButtonLinkCategoryForAdd,

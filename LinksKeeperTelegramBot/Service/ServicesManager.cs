@@ -25,6 +25,8 @@ public class ServicesManager
         _stateServiceMethodPairs[State.WaitingCommandStart] = _mainMenuService.ProcessCommandStart;
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuMain] =
             _mainMenuService.ProcessClickOnInlineButtonInMenuMain;
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAdd] =
+            _mainMenuService.ProcessClickOnInlineButtonInMenuAddChoosing;
     }
 
     public Task ProcessBotUpdate(long chatId, TransmittedData transmittedData, Update update,
