@@ -10,6 +10,5 @@ public class TableLinksCategories
     public TableLinksCategories(NpgsqlConnection connection)
     {
         _connection = connection;
-
     }
 }

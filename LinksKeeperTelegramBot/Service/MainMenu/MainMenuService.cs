@@ -1,7 +1,9 @@
 using LinksKeeperTelegramBot.Router;
+using LinksKeeperTelegramBot.Service.SharedProcessors;
 using LinksKeeperTelegramBot.Util.BotButtonsInitializer;
 using LinksKeeperTelegramBot.Util.InlineKeyboardsMarkupInitializer;
 using LinksKeeperTelegramBot.Util.ReplyTextsInitializer;
+using LinksKeeperTelegramBot.Util.Settings;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -20,11 +22,11 @@ public class MainMenuService
 
         string requestMessageText = update.Message.Text;
 
-        string responseMessageText = "empty";
+        string responseMessageText = StringsStorage.Empty;
 
-        if (requestMessageText != "/start")
+        if (requestMessageText != StringsStorage.CommandStart)
         {
-            responseMessageText = "Команда не распознана. Для начала работы с ботом введите /start";
+            responseMessageText = ReplyTextsStorage.CommandStartInputErrorInput;
 
             Logger.Info($"Команда не распознана. Метод ProcessCommandStart. chatId = {chatId}");
 
@@ -38,12 +40,12 @@ public class MainMenuService
             return taskError;
         }
 
+        transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
+        
         responseMessageText = ReplyTextsStorage.MenuMain;
 
         InlineKeyboardMarkup responseInlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
-
-        transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-
+        
         Task taskSuccess = botClient.SendTextMessageAsync(
             chatId: chatId,
             text: responseMessageText,
@@ -58,20 +60,25 @@ public class MainMenuService
     public Task ProcessClickOnInlineButtonInMenuMain(long chatId, TransmittedData transmittedData, Update update,
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
+        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset)
+        {
+            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
+        }
+
         string requestCallBackData = update.CallbackQuery.Data;
         int messageId = update.CallbackQuery.Message.MessageId;
 
-        string responseMessageText = "empty";
+        string responseMessageText = StringsStorage.Empty;
 
         if (requestCallBackData == BotButtonsStorage.ButtonAddInMenuMain.CallBackData)
         {
+            transmittedData.State = State.WaitingClickOnInlineButtonInMenuAdd;
+            
             responseMessageText = ReplyTextsStorage.MenuAdd;
 
             InlineKeyboardMarkup responseInlineKeyboardMarkup =
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAdd;
             
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuAdd;
-
             return botClient.EditMessageTextAsync(
                 chatId: chatId,
                 messageId: messageId,
@@ -104,30 +111,44 @@ public class MainMenuService
             cancellationToken: cancellationToken
         );
     }
-    
-     public Task ProcessClickOnInlineButtonInMenuAddChoosing(long chatId, TransmittedData transmittedData, Update update,
+
+    public Task ProcessClickOnInlineButtonInMenuAddChoosing(long chatId, TransmittedData transmittedData, Update update,
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
+        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset)
+        {
+            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
+        }
+
         string requestCallBackData = update.CallbackQuery.Data;
         int messageId = update.CallbackQuery.Message.MessageId;
 
-        string responseMessageText = "empty";
+        string responseMessageText = StringsStorage.Empty;
 
         if (requestCallBackData == BotButtonsStorage.ButtonLinkInMenuAdd.CallBackData)
         {
+            transmittedData.State = State.WaitingInputLinkUrlForAdd;
             
+            responseMessageText = ReplyTextsStorage.LinkInputUrl;
+            
+            return botClient.EditMessageTextAsync(
+                chatId: chatId,
+                messageId: messageId,
+                text: responseMessageText,
+                cancellationToken: cancellationToken
+            );
         }
         else if (requestCallBackData == BotButtonsStorage.ButtonCategoryInMenuAdd.CallBackData)
         {
-            
         }
         else if (requestCallBackData == BotButtonsStorage.ButtonBackwardInMenuAdd.CallBackData)
         {
-            responseMessageText = ReplyTextsStorage.MenuMain;
-            
-            InlineKeyboardMarkup responseInlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
-
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
+            
+            responseMessageText = ReplyTextsStorage.MenuMain;
+
+            InlineKeyboardMarkup responseInlineKeyboardMarkup =
+                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
 
             return botClient.EditMessageTextAsync(
                 chatId: chatId,
@@ -135,7 +156,7 @@ public class MainMenuService
                 text: responseMessageText,
                 replyMarkup: responseInlineKeyboardMarkup,
                 cancellationToken: cancellationToken
-            );   
+            );
         }
 
         return botClient.EditMessageTextAsync(

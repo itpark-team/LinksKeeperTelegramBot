@@ -1,4 +1,5 @@
 using LinksKeeperTelegramBot.Router;
+using LinksKeeperTelegramBot.Service.Links;
 using LinksKeeperTelegramBot.Service.MainMenu;
 using NLog;
 using Telegram.Bot;
@@ -14,19 +15,28 @@ public class ServicesManager
         _stateServiceMethodPairs;
 
     private MainMenuService _mainMenuService;
+    private LinksService _linksService;
 
     public ServicesManager()
     {
         _mainMenuService = new MainMenuService();
+        _linksService = new LinksService();
 
         _stateServiceMethodPairs =
             new Dictionary<State, Func<long, TransmittedData, Update, ITelegramBotClient, CancellationToken, Task>>();
 
         _stateServiceMethodPairs[State.WaitingCommandStart] = _mainMenuService.ProcessCommandStart;
+        
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuMain] =
             _mainMenuService.ProcessClickOnInlineButtonInMenuMain;
+        
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAdd] =
             _mainMenuService.ProcessClickOnInlineButtonInMenuAddChoosing;
+
+        _stateServiceMethodPairs[State.WaitingInputLinkUrlForAdd] = _linksService.ProcessInputLinkUrlForAdd;
+        
+        _stateServiceMethodPairs[State.WaitingInputLinkDescriptionForAdd] = _linksService.ProcessInputLinkDescriptionForAdd;
+        
     }
 
     public Task ProcessBotUpdate(long chatId, TransmittedData transmittedData, Update update,

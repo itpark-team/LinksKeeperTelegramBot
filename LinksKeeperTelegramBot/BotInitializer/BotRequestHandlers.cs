@@ -26,7 +26,7 @@ public class BotRequestHandlers
         
         long chatId = 0;
         bool canRoute = false;
-
+        
         switch (update.Type)
         {
             case UpdateType.Message:
