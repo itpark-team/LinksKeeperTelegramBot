@@ -14,7 +14,7 @@ public class GlobalServices
         CancellationToken cancellationToken)
     {
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-        transmittedData.ClearDataStorage();
+        transmittedData.DataStorage.Clear();
         
         string responseMessageText = ReplyTextsStorage.MenuMain;
 
