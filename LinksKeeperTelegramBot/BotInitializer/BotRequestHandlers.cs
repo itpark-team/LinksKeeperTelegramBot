@@ -25,6 +25,8 @@ public class BotRequestHandlers
         Logger.Info("Старт обработки входящего сообщения от клиента в методе HandleUpdateAsync");
         
         long chatId = 0;
+        int messageId = 0;
+        
         bool canRoute = false;
         
         switch (update.Type)
@@ -34,6 +36,7 @@ public class BotRequestHandlers
                 {
                     canRoute = true;
                     chatId = update.Message.Chat.Id;
+                    messageId = update.Message.MessageId;
                     Logger.Debug($"Тип входящего сообщения от chatId = {chatId} - UpdateType.Message");
                 }
 
@@ -44,6 +47,7 @@ public class BotRequestHandlers
                 {
                     canRoute = true;
                     chatId = update.CallbackQuery.Message.Chat.Id;
+                    messageId = update.CallbackQuery.Message.MessageId;
                     Logger.Debug($"Тип входящего сообщения chatId = {chatId} - UpdateType.CallbackQuery");
                 }
 
@@ -59,6 +63,13 @@ public class BotRequestHandlers
             catch (Exception e)
             {
                 Console.WriteLine("check Exception: "+e.ToString());
+
+                await botClient.DeleteMessageAsync(
+                    chatId:chatId, 
+                    messageId:messageId, 
+                    cancellationToken:cancellationToken);
+                
+                Console.WriteLine("error message deleted");
             }
         }
         
