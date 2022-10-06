@@ -52,7 +52,14 @@ public class BotRequestHandlers
         
         if (canRoute)
         {
-            await _chatsRouter.Route(chatId, update, botClient, cancellationToken);
+            try
+            {
+                await _chatsRouter.Route(chatId, update, botClient, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("check Exception: "+e.ToString());
+            }
         }
         
         Logger.Info($"Выполенна обработка входящего сообщения от chatId = {chatId} в методе HandleUpdateAsync");
