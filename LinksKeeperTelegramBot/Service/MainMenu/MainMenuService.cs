@@ -79,9 +79,9 @@ public class MainMenuService
             InlineKeyboardMarkup responseInlineKeyboardMarkup =
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAdd;
             
-            return botClient.EditMessageTextAsync(
+            return botClient.SendTextMessageAsync(
                 chatId: chatId,
-                messageId: messageId,
+                //messageId: messageId,
                 text: responseMessageText,
                 replyMarkup: responseInlineKeyboardMarkup,
                 cancellationToken: cancellationToken
@@ -104,9 +104,9 @@ public class MainMenuService
             responseMessageText = "Нажата клавиша Как пользоваться";
         }
 
-        return botClient.EditMessageTextAsync(
+        return botClient.SendTextMessageAsync(
             chatId: chatId,
-            messageId: messageId,
+            //messageId: messageId,
             text: responseMessageText,
             cancellationToken: cancellationToken
         );
@@ -131,9 +131,9 @@ public class MainMenuService
             
             responseMessageText = ReplyTextsStorage.LinkInputUrl;
             
-            return botClient.EditMessageTextAsync(
+            return botClient.SendTextMessageAsync(
                 chatId: chatId,
-                messageId: messageId,
+                //messageId: messageId,
                 text: responseMessageText,
                 cancellationToken: cancellationToken
             );

@@ -37,6 +37,16 @@ public class ServicesManager
 
         _stateServiceMethodPairs[State.WaitingInputLinkDescriptionForAdd] =
             _linksService.ProcessInputLinkDescriptionForAdd;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForAdd] =
+            _linksService.ProcessClickOnInlineButtonLinkCategoryForAdd;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuApproveAdd] =
+            _linksService.ProcessClickOnInlineButtonInMenuApproveAdd;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddAnotherLink] =
+            _linksService.ProcessClickOnInlineButtonInMenuAddAnotherLink;
+        
     }
 
     public Task ProcessBotUpdate(long chatId, TransmittedData transmittedData, Update update,

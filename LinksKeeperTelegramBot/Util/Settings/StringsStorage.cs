@@ -10,4 +10,5 @@ public class StringsStorage
     
     public static string DataStorageKeyLinkUrl = "LinkUrl";
     public static string DataStorageKeyLinkDescription = "LinkDescription";
+    public static string DataStorageKeyLinkCategoryId = "LinkCategoryId";
 }
