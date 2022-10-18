@@ -1,3 +1,4 @@
+using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Service.SharedProcessors;
 using LinksKeeperTelegramBot.Util.BotButtonsInitializer;
@@ -61,7 +62,7 @@ public class MainMenuService
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
         string requestCallBackData = update.CallbackQuery.Data;
-        int messageId = update.CallbackQuery.Message.MessageId;
+        
 
         string responseMessageText = SystemStringsStorage.Empty;
 
@@ -76,7 +77,6 @@ public class MainMenuService
             
             return botClient.SendTextMessageAsync(
                 chatId: chatId,
-                //messageId: messageId,
                 text: responseMessageText,
                 replyMarkup: responseInlineKeyboardMarkup,
                 cancellationToken: cancellationToken
@@ -84,7 +84,30 @@ public class MainMenuService
         }
         else if (requestCallBackData == BotButtonsStorage.ButtonShowInMenuMain.CallBackData)
         {
-            responseMessageText = "Нажата клавиша Просмотреть";
+            if (DbManager.GetInstance().TableLinksCategories.ContaintByChatId(chatId) == false)
+            {
+                responseMessageText = DialogsStringsStorage.MenuShowNoCategories;
+                
+                return botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: responseMessageText,
+                    cancellationToken: cancellationToken
+                );
+            }
+            
+            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
+            
+            responseMessageText = DialogsStringsStorage.MenuShow;
+
+            InlineKeyboardMarkup responseInlineKeyboardMarkup =
+                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(chatId);
+            
+            return botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: responseMessageText,
+                replyMarkup: responseInlineKeyboardMarkup,
+                cancellationToken: cancellationToken
+            );
         }
         else if (requestCallBackData == BotButtonsStorage.ButtonEditInMenuMain.CallBackData)
         {
@@ -101,7 +124,6 @@ public class MainMenuService
 
         return botClient.SendTextMessageAsync(
             chatId: chatId,
-            //messageId: messageId,
             text: responseMessageText,
             cancellationToken: cancellationToken
         );
@@ -111,7 +133,6 @@ public class MainMenuService
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
         string requestCallBackData = update.CallbackQuery.Data;
-        int messageId = update.CallbackQuery.Message.MessageId;
 
         string responseMessageText = SystemStringsStorage.Empty;
 
@@ -123,7 +144,6 @@ public class MainMenuService
             
             return botClient.SendTextMessageAsync(
                 chatId: chatId,
-                //messageId: messageId,
                 text: responseMessageText,
                 cancellationToken: cancellationToken
             );
@@ -140,18 +160,16 @@ public class MainMenuService
             InlineKeyboardMarkup responseInlineKeyboardMarkup =
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
 
-            return botClient.EditMessageTextAsync(
+            return botClient.SendTextMessageAsync(
                 chatId: chatId,
-                messageId: messageId,
                 text: responseMessageText,
                 replyMarkup: responseInlineKeyboardMarkup,
                 cancellationToken: cancellationToken
             );
         }
 
-        return botClient.EditMessageTextAsync(
+        return botClient.SendTextMessageAsync(
             chatId: chatId,
-            messageId: messageId,
             text: responseMessageText,
             cancellationToken: cancellationToken
         );

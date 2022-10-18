@@ -9,5 +9,7 @@ public enum State
     WaitingInputLinkDescriptionForAdd,
     WaitingClickOnInlineButtonLinkCategoryForAdd,
     WaitingClickOnInlineButtonInMenuApproveAdd,
-    WaitingClickOnInlineButtonInMenuAddAnotherLink
+    WaitingClickOnInlineButtonInMenuAddAnotherLink,
+    
+    WaitingClickOnInlineButtonLinkCategoryForShow,
 }

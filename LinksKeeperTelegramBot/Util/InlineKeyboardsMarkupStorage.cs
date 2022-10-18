@@ -115,4 +115,30 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonAddOneInMenuAddAnotherLink.CallBackData),
         }
     });
+    
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForShow(long chatId)
+    {
+        TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+        
+        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(chatId);
+
+        List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
+
+        foreach (LinkCategory linkCategory in linkCategories)
+        {
+            keyboardMarkup.Add(
+                new()
+                {
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, linkCategory.Id.ToString())
+                }
+            );
+        }
+        
+        keyboardMarkup.Add(new()
+        { 
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInMenuShow.Name, BotButtonsStorage.ButtonBackwardInMenuShow.CallBackData)
+        });
+
+        return new InlineKeyboardMarkup(keyboardMarkup);
+    }
 }

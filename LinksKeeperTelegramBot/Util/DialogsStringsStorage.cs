@@ -29,4 +29,7 @@ public class DialogsStringsStorage
     
     public const string LinkApproveAddYes = "Ваша ссылка успешно сохранена\nВыберите дальнейшее действие.";
     public const string LinkApproveAddNo = "Сохранение вашей ссылки успешно отменено\nВыберите дальнейшее действие.";
+    
+    public const string MenuShow = "Выберите, категорию, ссылки в которой вы хотите просмотреть";
+    public const string MenuShowNoCategories = "У вас нет ещё ни одной добавленной ссылки, пожалуйста вначале добавьте ссылку";
 }

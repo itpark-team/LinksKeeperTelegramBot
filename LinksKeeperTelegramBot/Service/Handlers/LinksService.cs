@@ -1,3 +1,4 @@
+using System.Text;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Router;
@@ -194,5 +195,51 @@ public class LinksService
             text: responseMessageText,
             cancellationToken: cancellationToken
         );
+    }
+    
+    public Task ProcessClickOnInlineButtonLinkCategoryForShow(long chatId, TransmittedData transmittedData,
+        Update update,
+        ITelegramBotClient botClient, CancellationToken cancellationToken)
+    {
+        string requestCallBackData = update.CallbackQuery.Data;
+        string responseMessageText = SystemStringsStorage.Empty;
+        
+        if (requestCallBackData == BotButtonsStorage.ButtonBackwardInMenuShow.CallBackData)
+        {
+            transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
+            
+            responseMessageText = DialogsStringsStorage.MenuMain;
+
+            InlineKeyboardMarkup responseInlineKeyboardMarkup =
+                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
+
+            return botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: responseMessageText,
+                replyMarkup: responseInlineKeyboardMarkup,
+                cancellationToken: cancellationToken
+            );
+        }
+
+        int categoryId = int.Parse(requestCallBackData);
+
+        IEnumerable<Link> links = DbManager.GetInstance().TableLinks.GetAllByCategoryId(categoryId);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        foreach (Link link in links)
+        {
+            stringBuilder.AppendLine(link.Url);
+            stringBuilder.AppendLine(link.Description);
+            stringBuilder.AppendLine("-----");
+            
+        }
+        responseMessageText = stringBuilder.ToString();//843765
+
+        //todo break on blocks
+
+        return botClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: responseMessageText,
+            cancellationToken: cancellationToken);
     }
 }
