@@ -1,4 +1,6 @@
 using LinksKeeperTelegramBot.Service;
+using LinksKeeperTelegramBot.Service.SharedProcessors;
+using LinksKeeperTelegramBot.Util.Settings;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -28,6 +30,12 @@ public class ChatsRouter
 
         TransmittedData transmittedData = _chatTransmittedDataPairs[chatId];
 
+        //process reset command
+        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
+        {
+            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
+        }
+        
         Task task = _servicesManager.ProcessBotUpdate(chatId, transmittedData, update, botClient, cancellationToken);
 
         Logger.Info($"Выполнен метода Route для chatId = {chatId}");

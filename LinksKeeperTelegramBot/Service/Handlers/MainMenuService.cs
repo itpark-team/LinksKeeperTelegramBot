@@ -60,11 +60,6 @@ public class MainMenuService
     public Task ProcessClickOnInlineButtonInMenuMain(long chatId, TransmittedData transmittedData, Update update,
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
-        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset)
-        {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
-        }
-
         string requestCallBackData = update.CallbackQuery.Data;
         int messageId = update.CallbackQuery.Message.MessageId;
 
@@ -115,11 +110,6 @@ public class MainMenuService
     public Task ProcessClickOnInlineButtonInMenuAddChoosing(long chatId, TransmittedData transmittedData, Update update,
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
-        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset)
-        {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
-        }
-
         string requestCallBackData = update.CallbackQuery.Data;
         int messageId = update.CallbackQuery.Message.MessageId;
 

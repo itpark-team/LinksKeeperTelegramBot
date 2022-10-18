@@ -19,12 +19,7 @@ public class LinksService
     {
         string requestMessageText = update.Message.Text;
         string responseMessageText = StringsStorage.Empty;
-
-        if (responseMessageText == StringsStorage.CommandReset)
-        {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
-        }
-
+        
         string url = requestMessageText;
 
         if (!url.StartsWith(StringsStorage.Http) && !url.StartsWith(StringsStorage.Https) ||
@@ -54,12 +49,7 @@ public class LinksService
     {
         string requestMessageText = update.Message.Text;
         string responseMessageText = StringsStorage.Empty;
-
-        if (responseMessageText == StringsStorage.CommandReset)
-        {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
-        }
-
+        
         string description = requestMessageText;
 
         if (!(description.Length >= 3 && description.Length <= 256))
@@ -91,11 +81,6 @@ public class LinksService
         Update update,
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
-        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset)
-        {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
-        }
-
         string requestCallBackData = update.CallbackQuery.Data;
 
         string responseMessageText = StringsStorage.Empty;
@@ -128,11 +113,6 @@ public class LinksService
         Update update,
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
-        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset)
-        {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
-        }
-
         string requestCallBackData = update.CallbackQuery.Data;
 
         string responseMessageText = StringsStorage.Empty;
@@ -180,11 +160,6 @@ public class LinksService
         Update update,
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
-        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset)
-        {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
-        }
-
         string requestCallBackData = update.CallbackQuery.Data;
 
         string responseMessageText = StringsStorage.Empty;
