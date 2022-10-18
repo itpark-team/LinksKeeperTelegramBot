@@ -1,14 +1,16 @@
 namespace LinksKeeperTelegramBot.Util.Settings;
 
-public class StringsStorage
+public class SystemStringsStorage
 {
-    public static string Http = "http://";
-    public static string Https = "https://";
-    public static string CommandReset = "/reset";
-    public static string CommandStart = "/start";
-    public static string Empty = "empty";
+    public const string Http = "http://";
+    public const string Https = "https://";
+    public const string CommandReset = "/reset";
+    public const string CommandStart = "/start";
+    public const string Empty = "empty";
     
-    public static string DataStorageKeyLinkUrl = "LinkUrl";
-    public static string DataStorageKeyLinkDescription = "LinkDescription";
-    public static string DataStorageKeyLinkCategoryId = "LinkCategoryId";
+    public const string FirstLinkCategory = "Общее";
+    
+    public const string DataStorageKeyLinkUrl = "LinkUrl";
+    public const string DataStorageKeyLinkDescription = "LinkDescription";
+    public const string DataStorageKeyLinkCategoryId = "LinkCategoryId";
 }

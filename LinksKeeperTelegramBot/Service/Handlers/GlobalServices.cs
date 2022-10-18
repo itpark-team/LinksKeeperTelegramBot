@@ -16,7 +16,7 @@ public class GlobalServices
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
         transmittedData.DataStorage.Clear();
         
-        string responseMessageText = ReplyTextsStorage.MenuMain;
+        string responseMessageText = DialogsStringsStorage.MenuMain;
 
         InlineKeyboardMarkup responseInlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
 

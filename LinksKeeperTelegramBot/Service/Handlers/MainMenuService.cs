@@ -22,11 +22,11 @@ public class MainMenuService
 
         string requestMessageText = update.Message.Text;
 
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
 
-        if (requestMessageText != StringsStorage.CommandStart)
+        if (requestMessageText != SystemStringsStorage.CommandStart)
         {
-            responseMessageText = ReplyTextsStorage.CommandStartInputErrorInput;
+            responseMessageText = DialogsStringsStorage.CommandStartInputErrorInput;
 
             Logger.Info($"Команда не распознана. Метод ProcessCommandStart. chatId = {chatId}");
 
@@ -42,7 +42,7 @@ public class MainMenuService
 
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
         
-        responseMessageText = ReplyTextsStorage.MenuMain;
+        responseMessageText = DialogsStringsStorage.MenuMain;
 
         InlineKeyboardMarkup responseInlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
         
@@ -63,13 +63,13 @@ public class MainMenuService
         string requestCallBackData = update.CallbackQuery.Data;
         int messageId = update.CallbackQuery.Message.MessageId;
 
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
 
         if (requestCallBackData == BotButtonsStorage.ButtonAddInMenuMain.CallBackData)
         {
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuAdd;
             
-            responseMessageText = ReplyTextsStorage.MenuAdd;
+            responseMessageText = DialogsStringsStorage.MenuAdd;
 
             InlineKeyboardMarkup responseInlineKeyboardMarkup =
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAdd;
@@ -113,13 +113,13 @@ public class MainMenuService
         string requestCallBackData = update.CallbackQuery.Data;
         int messageId = update.CallbackQuery.Message.MessageId;
 
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
 
         if (requestCallBackData == BotButtonsStorage.ButtonLinkInMenuAdd.CallBackData)
         {
             transmittedData.State = State.WaitingInputLinkUrlForAdd;
             
-            responseMessageText = ReplyTextsStorage.LinkInputUrl;
+            responseMessageText = DialogsStringsStorage.LinkInputUrl;
             
             return botClient.SendTextMessageAsync(
                 chatId: chatId,
@@ -135,7 +135,7 @@ public class MainMenuService
         {
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
             
-            responseMessageText = ReplyTextsStorage.MenuMain;
+            responseMessageText = DialogsStringsStorage.MenuMain;
 
             InlineKeyboardMarkup responseInlineKeyboardMarkup =
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;

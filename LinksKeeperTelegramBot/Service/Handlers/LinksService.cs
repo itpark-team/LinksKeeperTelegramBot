@@ -1,7 +1,6 @@
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Router;
-using LinksKeeperTelegramBot.Service.SharedProcessors;
 using LinksKeeperTelegramBot.Util.BotButtonsInitializer;
 using LinksKeeperTelegramBot.Util.InlineKeyboardsMarkupInitializer;
 using LinksKeeperTelegramBot.Util.ReplyTextsInitializer;
@@ -18,14 +17,14 @@ public class LinksService
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
         string requestMessageText = update.Message.Text;
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
         
         string url = requestMessageText;
 
-        if (!url.StartsWith(StringsStorage.Http) && !url.StartsWith(StringsStorage.Https) ||
+        if (!url.StartsWith(SystemStringsStorage.Http) && !url.StartsWith(SystemStringsStorage.Https) ||
             !(url.Length >= 10 && url.Length <= 2048))
         {
-            responseMessageText = ReplyTextsStorage.LinkInputUrlError;
+            responseMessageText = DialogsStringsStorage.LinkInputUrlError;
 
             return botClient.SendTextMessageAsync(
                 chatId: chatId,
@@ -34,9 +33,9 @@ public class LinksService
         }
 
         transmittedData.State = State.WaitingInputLinkDescriptionForAdd;
-        transmittedData.DataStorage.Add(StringsStorage.DataStorageKeyLinkUrl, url);
+        transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkUrl, url);
 
-        responseMessageText = ReplyTextsStorage.LinkInputUrlSuccess;
+        responseMessageText = DialogsStringsStorage.LinkInputUrlSuccess;
 
         return botClient.SendTextMessageAsync(
             chatId: chatId,
@@ -48,13 +47,13 @@ public class LinksService
         ITelegramBotClient botClient, CancellationToken cancellationToken)
     {
         string requestMessageText = update.Message.Text;
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
         
         string description = requestMessageText;
 
         if (!(description.Length >= 3 && description.Length <= 256))
         {
-            responseMessageText = ReplyTextsStorage.LinkInputDescriptionError;
+            responseMessageText = DialogsStringsStorage.LinkInputDescriptionError;
 
             return botClient.SendTextMessageAsync(
                 chatId: chatId,
@@ -63,12 +62,12 @@ public class LinksService
         }
 
         transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForAdd;
-        transmittedData.DataStorage.Add(StringsStorage.DataStorageKeyLinkDescription, description);
+        transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkDescription, description);
 
-        responseMessageText = ReplyTextsStorage.LinkInputDescriptionSuccess;
+        responseMessageText = DialogsStringsStorage.LinkInputDescriptionSuccess;
 
         InlineKeyboardMarkup responseInlineKeyboardMarkup =
-            InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd();
+            InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(chatId);
 
         return botClient.SendTextMessageAsync(
             chatId: chatId,
@@ -83,21 +82,19 @@ public class LinksService
     {
         string requestCallBackData = update.CallbackQuery.Data;
 
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
 
         int categoryId = int.Parse(requestCallBackData);
 
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuApproveAdd;
+        transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkCategoryId, categoryId);
 
-        transmittedData.DataStorage.Add(StringsStorage.DataStorageKeyLinkCategoryId, categoryId);
-
-        string url = transmittedData.DataStorage.Get(StringsStorage.DataStorageKeyLinkUrl) as string;
-
-        string description = transmittedData.DataStorage.Get(StringsStorage.DataStorageKeyLinkDescription) as string;
+        string url = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkUrl) as string;
+        string description = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkDescription) as string;
 
         string categoryName = DbManager.GetInstance().TableLinksCategories.getById(categoryId).Name;
 
-        responseMessageText = ReplyTextsStorage.CreateLinkInputCategory(url, description, categoryName);
+        responseMessageText = DialogsStringsStorage.CreateLinkInputCategory(url, description, categoryName);
 
         InlineKeyboardMarkup responseInlineKeyboardMarkup =
             InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuApproveAdd;
@@ -115,18 +112,18 @@ public class LinksService
     {
         string requestCallBackData = update.CallbackQuery.Data;
 
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
 
         if (requestCallBackData == BotButtonsStorage.ButtonYesInMenuApproveAdd.CallBackData)
         {
-            responseMessageText = ReplyTextsStorage.LinkApproveAddYes;
+            responseMessageText = DialogsStringsStorage.LinkApproveAddYes;
 
-            string url = transmittedData.DataStorage.Get(StringsStorage.DataStorageKeyLinkUrl) as string;
+            string url = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkUrl) as string;
 
             string description =
-                transmittedData.DataStorage.Get(StringsStorage.DataStorageKeyLinkDescription) as string;
+                transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkDescription) as string;
 
-            int categoryId = (int)transmittedData.DataStorage.Get(StringsStorage.DataStorageKeyLinkCategoryId);
+            int categoryId = (int)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkCategoryId);
 
             Link link = new Link()
             {
@@ -140,7 +137,7 @@ public class LinksService
         }
         else if (requestCallBackData == BotButtonsStorage.ButtonNoInMenuApproveAdd.CallBackData)
         {
-            responseMessageText = ReplyTextsStorage.LinkApproveAddNo;
+            responseMessageText = DialogsStringsStorage.LinkApproveAddNo;
         }
 
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuAddAnotherLink;
@@ -162,13 +159,13 @@ public class LinksService
     {
         string requestCallBackData = update.CallbackQuery.Data;
 
-        string responseMessageText = StringsStorage.Empty;
+        string responseMessageText = SystemStringsStorage.Empty;
 
         if (requestCallBackData == BotButtonsStorage.ButtonGotoMainMenuInMenuAddAnotherLink.CallBackData)
         {
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
 
-            responseMessageText = ReplyTextsStorage.MenuMain;
+            responseMessageText = DialogsStringsStorage.MenuMain;
 
             InlineKeyboardMarkup responseInlineKeyboardMarkup =
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
@@ -183,7 +180,7 @@ public class LinksService
         {
             transmittedData.State = State.WaitingInputLinkUrlForAdd;
             
-            responseMessageText = ReplyTextsStorage.LinkInputUrl;
+            responseMessageText = DialogsStringsStorage.LinkInputUrl;
             
             return botClient.SendTextMessageAsync(
                 chatId: chatId,

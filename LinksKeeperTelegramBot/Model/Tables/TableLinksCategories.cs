@@ -18,21 +18,44 @@ public class TableLinksCategories
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
 
         NpgsqlDataReader dataReader = command.ExecuteReader();
-        
+
         dataReader.Read();
-        
+
         int id = dataReader.GetInt32(dataReader.GetOrdinal("id"));
         string name = dataReader.GetString(dataReader.GetOrdinal("name"));
-        
+
         dataReader.Close();
-        
+
         return new LinkCategory()
         {
             Id = id,
             Name = name
         };
     }
+
+    public bool containtByChatId(long chatId)
+    {
+        string sqlRequest = $"SELECT * FROM links_categories WHERE chat_id={chatId}";
+        NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
+
+        NpgsqlDataReader dataReader = command.ExecuteReader();
+
+        bool exist = dataReader.HasRows;
+
+        dataReader.Close();
+
+        return exist;
+    }
     
+    public void addNew(LinkCategory linkCategory)
+    {
+        string sqlRequest = $"INSERT INTO links_categories (name, chat_id) VALUES ('{linkCategory.Name}', {linkCategory.ChatId})";
+        
+        NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
+
+        command.ExecuteNonQuery();
+    }
+
     public IEnumerable<LinkCategory> getAll()
     {
         string sqlRequest = "SELECT * FROM links_categories";
@@ -53,7 +76,7 @@ public class TableLinksCategories
                 Name = name
             });
         }
-        
+
         dataReader.Close();
 
         return linkCategories;

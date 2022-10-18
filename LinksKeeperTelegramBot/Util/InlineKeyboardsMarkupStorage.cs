@@ -3,6 +3,7 @@ using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Util.BotButtonsInitializer;
+using LinksKeeperTelegramBot.Util.Settings;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LinksKeeperTelegramBot.Util.InlineKeyboardsMarkupInitializer;
@@ -37,8 +38,7 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonHowToUseInMenuMain.CallBackData),
         },
     });
-
-
+    
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAdd = new(new[]
     {
         new[]
@@ -58,9 +58,20 @@ public class InlineKeyboardsMarkupStorage
         }
     });
 
-    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForAdd()
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(long chatId)
     {
-        IEnumerable<LinkCategory> linkCategories = DbManager.GetInstance().TableLinksCategories.getAll();
+        TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+
+        if (tableLinksCategories.containtByChatId(chatId)==false)
+        {
+            tableLinksCategories.addNew(new LinkCategory()
+            {
+                Name = SystemStringsStorage.FirstLinkCategory,
+                ChatId = chatId
+            });
+        }
+        
+        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.getAll();
 
         List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
 

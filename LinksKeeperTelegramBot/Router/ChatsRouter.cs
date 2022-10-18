@@ -31,7 +31,7 @@ public class ChatsRouter
         TransmittedData transmittedData = _chatTransmittedDataPairs[chatId];
 
         //process reset command
-        if (update.Message != null && update.Message.Text == StringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
+        if (update.Message != null && update.Message.Text == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
         {
             return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
         }
