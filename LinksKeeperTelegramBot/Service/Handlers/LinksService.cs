@@ -92,7 +92,7 @@ public class LinksService
         string url = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkUrl) as string;
         string description = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkDescription) as string;
 
-        string categoryName = DbManager.GetInstance().TableLinksCategories.getById(categoryId).Name;
+        string categoryName = DbManager.GetInstance().TableLinksCategories.GetById(categoryId).Name;
 
         responseMessageText = DialogsStringsStorage.CreateLinkInputCategory(url, description, categoryName);
 
@@ -133,7 +133,7 @@ public class LinksService
                 ChatId = chatId
             };
 
-            DbManager.GetInstance().TableLinks.addNew(link);
+            DbManager.GetInstance().TableLinks.AddNew(link);
         }
         else if (requestCallBackData == BotButtonsStorage.ButtonNoInMenuApproveAdd.CallBackData)
         {

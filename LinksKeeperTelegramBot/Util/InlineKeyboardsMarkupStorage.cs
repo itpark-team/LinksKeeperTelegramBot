@@ -62,16 +62,16 @@ public class InlineKeyboardsMarkupStorage
     {
         TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
-        if (tableLinksCategories.containtByChatId(chatId)==false)
+        if (tableLinksCategories.ContaintByChatId(chatId)==false)
         {
-            tableLinksCategories.addNew(new LinkCategory()
+            tableLinksCategories.AddNew(new LinkCategory()
             {
                 Name = SystemStringsStorage.FirstLinkCategory,
                 ChatId = chatId
             });
         }
         
-        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.getAll();
+        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(chatId);
 
         List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
 

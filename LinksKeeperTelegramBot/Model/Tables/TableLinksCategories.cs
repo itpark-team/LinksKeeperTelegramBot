@@ -12,7 +12,7 @@ public class TableLinksCategories
         _connection = connection;
     }
 
-    public LinkCategory getById(int findId)
+    public LinkCategory GetById(int findId)
     {
         string sqlRequest = $"SELECT * FROM links_categories WHERE id={findId}";
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
@@ -33,7 +33,7 @@ public class TableLinksCategories
         };
     }
 
-    public bool containtByChatId(long chatId)
+    public bool ContaintByChatId(long chatId)
     {
         string sqlRequest = $"SELECT * FROM links_categories WHERE chat_id={chatId}";
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
@@ -47,7 +47,7 @@ public class TableLinksCategories
         return exist;
     }
     
-    public void addNew(LinkCategory linkCategory)
+    public void AddNew(LinkCategory linkCategory)
     {
         string sqlRequest = $"INSERT INTO links_categories (name, chat_id) VALUES ('{linkCategory.Name}', {linkCategory.ChatId})";
         
@@ -56,9 +56,9 @@ public class TableLinksCategories
         command.ExecuteNonQuery();
     }
 
-    public IEnumerable<LinkCategory> getAll()
+    public IEnumerable<LinkCategory> GetAllChatId(long chatId)
     {
-        string sqlRequest = "SELECT * FROM links_categories";
+        string sqlRequest = $"SELECT * FROM links_categories WHERE chat_id={chatId}";
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
 
         NpgsqlDataReader dataReader = command.ExecuteReader();
