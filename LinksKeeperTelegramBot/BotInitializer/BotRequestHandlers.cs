@@ -1,4 +1,5 @@
 using LinksKeeperTelegramBot.Router;
+using LinksKeeperTelegramBot.Util;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -26,6 +27,7 @@ public class BotRequestHandlers
         
         long chatId = 0;
         int messageId = 0;
+        string textData = SystemStringsStorage.Empty;
         
         bool canRoute = false;
         
@@ -37,6 +39,7 @@ public class BotRequestHandlers
                     canRoute = true;
                     chatId = update.Message.Chat.Id;
                     messageId = update.Message.MessageId;
+                    textData = update.Message.Text;
                     Logger.Debug($"Тип входящего сообщения от chatId = {chatId} - UpdateType.Message");
                 }
 
@@ -48,6 +51,7 @@ public class BotRequestHandlers
                     canRoute = true;
                     chatId = update.CallbackQuery.Message.Chat.Id;
                     messageId = update.CallbackQuery.Message.MessageId;
+                    textData = update.CallbackQuery.Data;
                     Logger.Debug($"Тип входящего сообщения chatId = {chatId} - UpdateType.CallbackQuery");
                 }
 
@@ -58,6 +62,11 @@ public class BotRequestHandlers
         {
             try
             {
+                //Task taskError = botClient.SendTextMessageAsync(
+                // chatId: chatId,
+                // text: responseMessageText,
+                // cancellationToken: cancellationToken);
+                
                 await _chatsRouter.Route(chatId, update, botClient, cancellationToken);
             }
             catch (Exception e)

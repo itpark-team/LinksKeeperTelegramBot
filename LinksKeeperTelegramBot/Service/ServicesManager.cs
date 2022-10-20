@@ -1,6 +1,6 @@
+using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Router;
-using LinksKeeperTelegramBot.Service.Links;
-using LinksKeeperTelegramBot.Service.MainMenu;
+using LinksKeeperTelegramBot.Service.Handlers;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -11,7 +11,7 @@ public class ServicesManager
 {
     private static ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    private Dictionary<State, Func<long, TransmittedData, Update, ITelegramBotClient, CancellationToken, Task>>
+    private Dictionary<State, Func<string, TransmittedData, BotTextMessage>>
         _stateServiceMethodPairs;
 
     private MainMenuService _mainMenuService;
@@ -23,7 +23,7 @@ public class ServicesManager
         _linksService = new LinksService();
 
         _stateServiceMethodPairs =
-            new Dictionary<State, Func<long, TransmittedData, Update, ITelegramBotClient, CancellationToken, Task>>();
+            new Dictionary<State, Func<string, TransmittedData, BotTextMessage>>();
 
         _stateServiceMethodPairs[State.WaitingCommandStart] = _mainMenuService.ProcessCommandStart;
 
@@ -37,28 +37,24 @@ public class ServicesManager
 
         _stateServiceMethodPairs[State.WaitingInputLinkDescriptionForAdd] =
             _linksService.ProcessInputLinkDescriptionForAdd;
-        
+
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForAdd] =
             _linksService.ProcessClickOnInlineButtonLinkCategoryForAdd;
-        
+
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuApproveAdd] =
             _linksService.ProcessClickOnInlineButtonInMenuApproveAdd;
-        
+
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddAnotherLink] =
             _linksService.ProcessClickOnInlineButtonInMenuAddAnotherLink;
-        
+
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForShow] =
             _linksService.ProcessClickOnInlineButtonLinkCategoryForShow;
     }
 
-    public Task ProcessBotUpdate(long chatId, TransmittedData transmittedData, Update update,
-        ITelegramBotClient botClient, CancellationToken cancellationToken)
+    public BotTextMessage ProcessBotUpdate(string textData, TransmittedData transmittedData)
     {
         var serviceMethod = _stateServiceMethodPairs[transmittedData.State];
 
-        Logger.Info(
-            $"Вызван метод ProcessBotUpdate Для chatId = {chatId} состояние системы = {transmittedData.State} функция для обработки = {serviceMethod.Method.Name}");
-
-        return serviceMethod.Invoke(chatId, transmittedData, update, botClient, cancellationToken);
+        return serviceMethod.Invoke(textData, transmittedData);
     }
 }

@@ -2,11 +2,10 @@ using System.Dynamic;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Model.Tables;
-using LinksKeeperTelegramBot.Util.BotButtonsInitializer;
-using LinksKeeperTelegramBot.Util.Settings;
+using LinksKeeperTelegramBot.Util;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace LinksKeeperTelegramBot.Util.InlineKeyboardsMarkupInitializer;
+namespace LinksKeeperTelegramBot.Util;
 
 public class InlineKeyboardsMarkupStorage
 {

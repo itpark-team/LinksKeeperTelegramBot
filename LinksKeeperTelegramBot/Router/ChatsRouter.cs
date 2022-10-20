@@ -1,6 +1,6 @@
 using LinksKeeperTelegramBot.Service;
-using LinksKeeperTelegramBot.Service.SharedProcessors;
-using LinksKeeperTelegramBot.Util.Settings;
+using LinksKeeperTelegramBot.Service.Handlers;
+using LinksKeeperTelegramBot.Util;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -25,7 +25,7 @@ public class ChatsRouter
         Logger.Info($"Старт метода Route для chatId = {chatId}");
         if (!_chatTransmittedDataPairs.ContainsKey(chatId))
         {
-            _chatTransmittedDataPairs[chatId] = new TransmittedData();
+            _chatTransmittedDataPairs[chatId] = new TransmittedData(chatId);
         }
 
         TransmittedData transmittedData = _chatTransmittedDataPairs[chatId];

@@ -1,4 +1,4 @@
-namespace LinksKeeperTelegramBot.Util.Settings;
+namespace LinksKeeperTelegramBot.Util;
 
 public class SystemStringsStorage
 {

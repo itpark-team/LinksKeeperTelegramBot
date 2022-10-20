@@ -1,31 +1,21 @@
+using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Router;
-using LinksKeeperTelegramBot.Util.InlineKeyboardsMarkupInitializer;
-using LinksKeeperTelegramBot.Util.ReplyTextsInitializer;
+using LinksKeeperTelegramBot.Util;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace LinksKeeperTelegramBot.Service.SharedProcessors;
+namespace LinksKeeperTelegramBot.Service.Handlers;
 
 public class GlobalServices
 {
-    public static Task ProcessCommandReset(long chatId, TransmittedData transmittedData, ITelegramBotClient botClient,
-        CancellationToken cancellationToken)
+    public static BotTextMessage ProcessCommandReset(string textData, TransmittedData transmittedData)
     {
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
         transmittedData.DataStorage.Clear();
-        
-        string responseMessageText = DialogsStringsStorage.MenuMain;
 
-        InlineKeyboardMarkup responseInlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
-
-        Task taskSuccess = botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: responseMessageText,
-            replyMarkup: responseInlineKeyboardMarkup,
-            cancellationToken: cancellationToken);
-        
-        return taskSuccess;
+        return new BotTextMessage(DialogsStringsStorage.MenuMain,
+            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain);
     }
 }
