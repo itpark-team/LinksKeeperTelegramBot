@@ -1,124 +1,73 @@
 using System.Text;
+using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Router;
-using LinksKeeperTelegramBot.Util.BotButtonsInitializer;
-using LinksKeeperTelegramBot.Util.InlineKeyboardsMarkupInitializer;
-using LinksKeeperTelegramBot.Util.ReplyTextsInitializer;
-using LinksKeeperTelegramBot.Util.Settings;
+using LinksKeeperTelegramBot.Util;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace LinksKeeperTelegramBot.Service.Links;
+namespace LinksKeeperTelegramBot.Service.Handlers;
 
 public class LinksService
 {
-    public Task ProcessInputLinkUrlForAdd(long chatId, TransmittedData transmittedData, Update update,
-        ITelegramBotClient botClient, CancellationToken cancellationToken)
+    public BotTextMessage ProcessInputLinkUrlForAdd(string url, TransmittedData transmittedData)
     {
-        string requestMessageText = update.Message.Text;
-        string responseMessageText = SystemStringsStorage.Empty;
-        
-        string url = requestMessageText;
-
         if (!url.StartsWith(SystemStringsStorage.Http) && !url.StartsWith(SystemStringsStorage.Https) ||
             !(url.Length >= 10 && url.Length <= 2048))
         {
-            responseMessageText = DialogsStringsStorage.LinkInputUrlError;
-
-            return botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: responseMessageText,
-                cancellationToken: cancellationToken);
+            return new BotTextMessage(DialogsStringsStorage.LinkInputUrlError);
         }
 
         transmittedData.State = State.WaitingInputLinkDescriptionForAdd;
         transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkUrl, url);
 
-        responseMessageText = DialogsStringsStorage.LinkInputUrlSuccess;
-
-        return botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: responseMessageText,
-            cancellationToken: cancellationToken);
+        return new BotTextMessage(DialogsStringsStorage.LinkInputUrlSuccess);
     }
 
-    public Task ProcessInputLinkDescriptionForAdd(long chatId, TransmittedData transmittedData, Update update,
-        ITelegramBotClient botClient, CancellationToken cancellationToken)
+    public BotTextMessage ProcessInputLinkDescriptionForAdd(string description, TransmittedData transmittedData)
     {
-        string requestMessageText = update.Message.Text;
-        string responseMessageText = SystemStringsStorage.Empty;
-        
-        string description = requestMessageText;
-
         if (!(description.Length >= 3 && description.Length <= 256))
         {
-            responseMessageText = DialogsStringsStorage.LinkInputDescriptionError;
-
-            return botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: responseMessageText,
-                cancellationToken: cancellationToken);
+            return new BotTextMessage(DialogsStringsStorage.LinkInputDescriptionError);
         }
 
         transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForAdd;
         transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkDescription, description);
 
-        responseMessageText = DialogsStringsStorage.LinkInputDescriptionSuccess;
-
-        InlineKeyboardMarkup responseInlineKeyboardMarkup =
-            InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(chatId);
-
-        return botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: responseMessageText,
-            replyMarkup: responseInlineKeyboardMarkup,
-            cancellationToken: cancellationToken);
+        return new BotTextMessage(
+            DialogsStringsStorage.LinkInputDescriptionSuccess,
+            InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(transmittedData.ChatId)
+        );
     }
 
-    public Task ProcessClickOnInlineButtonLinkCategoryForAdd(long chatId, TransmittedData transmittedData,
-        Update update,
-        ITelegramBotClient botClient, CancellationToken cancellationToken)
+    public BotTextMessage ProcessClickOnInlineButtonLinkCategoryForAdd(string categoryIdAsString,
+        TransmittedData transmittedData)
     {
-        string requestCallBackData = update.CallbackQuery.Data;
-
-        string responseMessageText = SystemStringsStorage.Empty;
-
-        int categoryId = int.Parse(requestCallBackData);
+        int categoryId = int.Parse(categoryIdAsString);
 
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuApproveAdd;
         transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkCategoryId, categoryId);
 
         string url = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkUrl) as string;
-        string description = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkDescription) as string;
-
+        string description =
+            transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkDescription) as string;
         string categoryName = DbManager.GetInstance().TableLinksCategories.GetById(categoryId).Name;
 
-        responseMessageText = DialogsStringsStorage.CreateLinkInputCategory(url, description, categoryName);
-
-        InlineKeyboardMarkup responseInlineKeyboardMarkup =
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuApproveAdd;
-
-        return botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: responseMessageText,
-            replyMarkup: responseInlineKeyboardMarkup,
-            cancellationToken: cancellationToken);
+        return new BotTextMessage(
+            DialogsStringsStorage.CreateLinkInputCategory(url, description, categoryName),
+            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuApproveAdd
+        );
     }
 
-    public Task ProcessClickOnInlineButtonInMenuApproveAdd(long chatId, TransmittedData transmittedData,
-        Update update,
-        ITelegramBotClient botClient, CancellationToken cancellationToken)
+    public BotTextMessage ProcessClickOnInlineButtonInMenuApproveAdd(string callBackData,
+        TransmittedData transmittedData)
     {
-        string requestCallBackData = update.CallbackQuery.Data;
-
         string responseMessageText = SystemStringsStorage.Empty;
 
-        if (requestCallBackData == BotButtonsStorage.ButtonYesInMenuApproveAdd.CallBackData)
+        if (callBackData == BotButtonsStorage.ButtonYesInMenuApproveAdd.CallBackData)
         {
-            responseMessageText = DialogsStringsStorage.LinkApproveAddYes;
-
             string url = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkUrl) as string;
 
             string description =
@@ -131,12 +80,14 @@ public class LinksService
                 Url = url,
                 Description = description,
                 CategoryId = categoryId,
-                ChatId = chatId
+                ChatId = transmittedData.ChatId
             };
 
             DbManager.GetInstance().TableLinks.AddNew(link);
+
+            responseMessageText = DialogsStringsStorage.LinkApproveAddYes;
         }
-        else if (requestCallBackData == BotButtonsStorage.ButtonNoInMenuApproveAdd.CallBackData)
+        else if (callBackData == BotButtonsStorage.ButtonNoInMenuApproveAdd.CallBackData)
         {
             responseMessageText = DialogsStringsStorage.LinkApproveAddNo;
         }
@@ -144,84 +95,48 @@ public class LinksService
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuAddAnotherLink;
         transmittedData.DataStorage.Clear();
 
-        InlineKeyboardMarkup responseInlineKeyboardMarkup =
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAddAnotherLink;
-
-        return botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: responseMessageText,
-            replyMarkup: responseInlineKeyboardMarkup,
-            cancellationToken: cancellationToken);
-    }
-
-    public Task ProcessClickOnInlineButtonInMenuAddAnotherLink(long chatId, TransmittedData transmittedData,
-        Update update,
-        ITelegramBotClient botClient, CancellationToken cancellationToken)
-    {
-        string requestCallBackData = update.CallbackQuery.Data;
-
-        string responseMessageText = SystemStringsStorage.Empty;
-
-        if (requestCallBackData == BotButtonsStorage.ButtonGotoMainMenuInMenuAddAnotherLink.CallBackData)
-        {
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-
-            responseMessageText = DialogsStringsStorage.MenuMain;
-
-            InlineKeyboardMarkup responseInlineKeyboardMarkup =
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
-
-            return botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: responseMessageText,
-                replyMarkup: responseInlineKeyboardMarkup,
-                cancellationToken: cancellationToken);
-        }
-        else if (requestCallBackData == BotButtonsStorage.ButtonAddOneInMenuAddAnotherLink.CallBackData)
-        {
-            transmittedData.State = State.WaitingInputLinkUrlForAdd;
-            
-            responseMessageText = DialogsStringsStorage.LinkInputUrl;
-            
-            return botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: responseMessageText,
-                cancellationToken: cancellationToken
-            );
-        }
-        
-        return botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: responseMessageText,
-            cancellationToken: cancellationToken
+        return new BotTextMessage(
+            responseMessageText,
+            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAddAnotherLink
         );
     }
-    
-    public Task ProcessClickOnInlineButtonLinkCategoryForShow(long chatId, TransmittedData transmittedData,
-        Update update,
-        ITelegramBotClient botClient, CancellationToken cancellationToken)
+
+    public BotTextMessage ProcessClickOnInlineButtonInMenuAddAnotherLink(string callBackData,
+        TransmittedData transmittedData)
     {
-        string requestCallBackData = update.CallbackQuery.Data;
-        string responseMessageText = SystemStringsStorage.Empty;
-        
-        if (requestCallBackData == BotButtonsStorage.ButtonBackwardInMenuShow.CallBackData)
+        if (callBackData == BotButtonsStorage.ButtonGotoMainMenuInMenuAddAnotherLink.CallBackData)
         {
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-            
-            responseMessageText = DialogsStringsStorage.MenuMain;
 
-            InlineKeyboardMarkup responseInlineKeyboardMarkup =
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain;
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuMain,
+                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
+            );
+        }
+        else if (callBackData == BotButtonsStorage.ButtonAddOneInMenuAddAnotherLink.CallBackData)
+        {
+            transmittedData.State = State.WaitingInputLinkUrlForAdd;
 
-            return botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: responseMessageText,
-                replyMarkup: responseInlineKeyboardMarkup,
-                cancellationToken: cancellationToken
+            return new BotTextMessage(DialogsStringsStorage.LinkInputUrl);
+        }
+
+        return new BotTextMessage();
+    }
+
+    public BotTextMessage ProcessClickOnInlineButtonLinkCategoryForShow(string callBackData,
+        TransmittedData transmittedData)
+    {
+        if (callBackData == BotButtonsStorage.ButtonBackwardInMenuShow.CallBackData)
+        {
+            transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuMain,
+                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
             );
         }
 
-        int categoryId = int.Parse(requestCallBackData);
+        int categoryId = int.Parse(callBackData);
 
         IEnumerable<Link> links = DbManager.GetInstance().TableLinks.GetAllByCategoryId(categoryId);
 
@@ -231,15 +146,9 @@ public class LinksService
             stringBuilder.AppendLine(link.Url);
             stringBuilder.AppendLine(link.Description);
             stringBuilder.AppendLine("-----");
-            
         }
-        responseMessageText = stringBuilder.ToString();//843765
+        //todo button ЕЩЁ
 
-        //todo break on blocks
-
-        return botClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: responseMessageText,
-            cancellationToken: cancellationToken);
+        return new BotTextMessage(stringBuilder.ToString());
     }
 }

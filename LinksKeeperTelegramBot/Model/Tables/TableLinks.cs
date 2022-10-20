@@ -23,7 +23,7 @@ public class TableLinks
     
     public IEnumerable<Link> GetAllByCategoryId(int findCategoryId)
     {
-        string sqlRequest = $"SELECT * FROM links WHERE category_id={findCategoryId}";
+        string sqlRequest = $"SELECT * FROM links WHERE category_id={findCategoryId} ORDER BY id ASC";
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
 
         NpgsqlDataReader dataReader = command.ExecuteReader();

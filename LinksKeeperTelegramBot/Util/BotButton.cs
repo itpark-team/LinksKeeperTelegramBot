@@ -1,4 +1,4 @@
-namespace LinksKeeperTelegramBot.Util.BotButtonsInitializer;
+namespace LinksKeeperTelegramBot.Util;
 
 public class BotButton
 {

@@ -1,4 +1,4 @@
-namespace LinksKeeperTelegramBot.Util.ReplyTextsInitializer;
+namespace LinksKeeperTelegramBot.Util;
 
 public class DialogsStringsStorage
 {

@@ -1,6 +1,7 @@
+using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Service;
-using LinksKeeperTelegramBot.Service.SharedProcessors;
-using LinksKeeperTelegramBot.Util.Settings;
+using LinksKeeperTelegramBot.Service.Handlers;
+using LinksKeeperTelegramBot.Util;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -20,26 +21,21 @@ public class ChatsRouter
         _servicesManager = new ServicesManager();
     }
 
-    public Task Route(long chatId, Update update, ITelegramBotClient botClient, CancellationToken cancellationToken)
+    public BotTextMessage Route(long chatId, string textData)
     {
-        Logger.Info($"Старт метода Route для chatId = {chatId}");
         if (!_chatTransmittedDataPairs.ContainsKey(chatId))
         {
-            _chatTransmittedDataPairs[chatId] = new TransmittedData();
+            _chatTransmittedDataPairs[chatId] = new TransmittedData(chatId);
         }
 
         TransmittedData transmittedData = _chatTransmittedDataPairs[chatId];
 
         //process reset command
-        if (update.Message != null && update.Message.Text == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
+        if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
         {
-            return GlobalServices.ProcessCommandReset(chatId, transmittedData, botClient, cancellationToken);
+            return GlobalServices.ProcessCommandReset(transmittedData);
         }
         
-        Task task = _servicesManager.ProcessBotUpdate(chatId, transmittedData, update, botClient, cancellationToken);
-
-        Logger.Info($"Выполнен метода Route для chatId = {chatId}");
-
-        return task;
+        return _servicesManager.ProcessBotUpdate(textData, transmittedData);
     }
 }
