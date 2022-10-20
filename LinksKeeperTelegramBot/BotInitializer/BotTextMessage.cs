@@ -5,8 +5,8 @@ namespace LinksKeeperTelegramBot.BotSettings;
 
 public class BotTextMessage
 {
-    private string Text { get; }
-    private InlineKeyboardMarkup InlineKeyboardMarkup { get; }
+    public string Text { get; }
+    public InlineKeyboardMarkup InlineKeyboardMarkup { get; }
     
     public BotTextMessage()
     {

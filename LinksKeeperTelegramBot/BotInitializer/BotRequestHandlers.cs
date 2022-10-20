@@ -24,13 +24,13 @@ public class BotRequestHandlers
         CancellationToken cancellationToken)
     {
         Logger.Info("Старт обработки входящего сообщения от клиента в методе HandleUpdateAsync");
-        
+
         long chatId = 0;
         int messageId = 0;
         string textData = SystemStringsStorage.Empty;
-        
+
         bool canRoute = false;
-        
+
         switch (update.Type)
         {
             case UpdateType.Message:
@@ -57,33 +57,29 @@ public class BotRequestHandlers
 
                 break;
         }
-        
+
         if (canRoute)
         {
             try
             {
-                //Task taskError = botClient.SendTextMessageAsync(
-                // chatId: chatId,
-                // text: responseMessageText,
-                // cancellationToken: cancellationToken);
-                
-                await _chatsRouter.Route(chatId, update, botClient, cancellationToken);
+                BotTextMessage botTextMessage = _chatsRouter.Route(chatId, textData);
+
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: botTextMessage.Text,
+                    replyMarkup: botTextMessage.InlineKeyboardMarkup,
+                    cancellationToken: cancellationToken);
             }
             catch (Exception e)
             {
-                Console.WriteLine("check Exception: "+e.ToString());
-
                 await botClient.DeleteMessageAsync(
-                    chatId:chatId, 
-                    messageId:messageId, 
-                    cancellationToken:cancellationToken);
-                
-                Console.WriteLine("error message deleted");
+                    chatId: chatId,
+                    messageId: messageId,
+                    cancellationToken: cancellationToken);
             }
         }
-        
-        Logger.Info($"Выполенна обработка входящего сообщения от chatId = {chatId} в методе HandleUpdateAsync");
 
+        Logger.Info($"Выполенна обработка входящего сообщения от chatId = {chatId} в методе HandleUpdateAsync");
     }
 
     public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,

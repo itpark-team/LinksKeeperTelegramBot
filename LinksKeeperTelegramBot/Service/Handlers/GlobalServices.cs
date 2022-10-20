@@ -10,7 +10,7 @@ namespace LinksKeeperTelegramBot.Service.Handlers;
 
 public class GlobalServices
 {
-    public static BotTextMessage ProcessCommandReset(string textData, TransmittedData transmittedData)
+    public static BotTextMessage ProcessCommandReset(TransmittedData transmittedData)
     {
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
         transmittedData.DataStorage.Clear();
