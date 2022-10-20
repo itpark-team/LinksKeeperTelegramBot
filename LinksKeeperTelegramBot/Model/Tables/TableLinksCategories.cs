@@ -58,7 +58,7 @@ public class TableLinksCategories
 
     public IEnumerable<LinkCategory> GetAllChatId(long chatId)
     {
-        string sqlRequest = $"SELECT * FROM links_categories WHERE chat_id={chatId}";
+        string sqlRequest = $"SELECT * FROM links_categories WHERE chat_id={chatId} ORDER BY id ASC";
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
 
         NpgsqlDataReader dataReader = command.ExecuteReader();
