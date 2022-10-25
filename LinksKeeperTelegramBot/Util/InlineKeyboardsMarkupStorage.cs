@@ -126,4 +126,29 @@ public class InlineKeyboardsMarkupStorage
 
         return new InlineKeyboardMarkup(keyboardMarkup);
     }
+    
+    public static InlineKeyboardMarkup InlineKeyboardMarkupShowLinksAll = new(new[]
+    {
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInShowLinks.Name,
+                BotButtonsStorage.ButtonBackwardInShowLinks.CallBackData),
+        }
+    });
+    
+    public static InlineKeyboardMarkup InlineKeyboardMarkupShowLinksMore = new(new[]
+    {
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonMoreInShowLinks.Name,
+                BotButtonsStorage.ButtonMoreInShowLinks.CallBackData),
+        },
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInShowLinks.Name,
+                BotButtonsStorage.ButtonBackwardInShowLinks.CallBackData),
+        }
+    });
+    
+    
 }

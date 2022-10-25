@@ -32,4 +32,6 @@ public class DialogsStringsStorage
     
     public const string MenuShow = "Выберите, категорию, ссылки в которой вы хотите просмотреть";
     public const string MenuShowNoCategories = "У вас нет ещё ни одной добавленной ссылки, пожалуйста вначале добавьте ссылку";
+    
+    
 }

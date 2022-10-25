@@ -49,6 +49,9 @@ public class ServicesManager
 
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForShow] =
             _linksService.ProcessClickOnInlineButtonLinkCategoryForShow;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryShowLinks] =
+            _linksService.ProcessClickOnInlineButtonLinkCategoryShowLinks;
     }
 
     public BotTextMessage ProcessBotUpdate(string textData, TransmittedData transmittedData)

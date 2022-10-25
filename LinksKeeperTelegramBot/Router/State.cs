@@ -12,4 +12,5 @@ public enum State
     WaitingClickOnInlineButtonInMenuAddAnotherLink,
     
     WaitingClickOnInlineButtonLinkCategoryForShow,
+    WaitingClickOnInlineButtonLinkCategoryShowLinks,
 }

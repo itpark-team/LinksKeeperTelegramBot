@@ -10,7 +10,9 @@ public class SystemStringsStorage
     
     public const string FirstLinkCategory = "Общее";
     
-    public const string DataStorageKeyLinkUrl = "LinkUrl";
-    public const string DataStorageKeyLinkDescription = "LinkDescription";
-    public const string DataStorageKeyLinkCategoryId = "LinkCategoryId";
+    public const string DataStorageKeyLinkUrl = "DataStorageKeyLinkUrl";
+    public const string DataStorageKeyLinkDescription = "DataStorageKeyLinkDescription";
+    public const string DataStorageKeyLinkCategoryId = "DataStorageKeyLinkCategoryId";
+    
+    public const string DataStorageKeyShowLinksLastId = "DataStorageKeyShowLinksLastId";
 }

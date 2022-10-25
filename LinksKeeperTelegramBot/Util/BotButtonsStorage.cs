@@ -30,4 +30,9 @@ public class BotButtonsStorage
     public static BotButton ButtonBackwardInMenuShow { get; } = new BotButton("Назад", "ButtonBackwardInMenuShow");
     
     #endregion
+    
+    #region ButtonsInShowLinks 
+    public static BotButton ButtonBackwardInShowLinks { get; } = new BotButton("Назад", "ButtonBackwardInShowLinks");
+    public static BotButton ButtonMoreInShowLinks { get; } = new BotButton("Ещё", "ButtonMoreInShowLinks");
+    #endregion
 }

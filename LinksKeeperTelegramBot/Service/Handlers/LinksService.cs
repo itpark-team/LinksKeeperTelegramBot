@@ -16,7 +16,7 @@ public class LinksService
     public BotTextMessage ProcessInputLinkUrlForAdd(string url, TransmittedData transmittedData)
     {
         if (!url.StartsWith(SystemStringsStorage.Http) && !url.StartsWith(SystemStringsStorage.Https) ||
-            !(url.Length >= 10 && url.Length <= 2048))
+            !(url.Length >= Constants.MinUrlLength && url.Length <= Constants.MaxUrlLength))
         {
             return new BotTextMessage(DialogsStringsStorage.LinkInputUrlError);
         }
@@ -29,17 +29,16 @@ public class LinksService
 
     public BotTextMessage ProcessInputLinkDescriptionForAdd(string description, TransmittedData transmittedData)
     {
-        if (!(description.Length >= 3 && description.Length <= 256))
+        if (!(description.Length >= Constants.MinDescriptionLength && description.Length <= Constants.MaxDescriptionLength))
         {
             return new BotTextMessage(DialogsStringsStorage.LinkInputDescriptionError);
         }
-        
         transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForAdd;
         transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkDescription, description);
-        
+
         TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
-        if (tableLinksCategories.ContaintByChatId(transmittedData.ChatId)==false)
+        if (tableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
         {
             tableLinksCategories.AddNew(new LinkCategory()
             {
@@ -47,9 +46,9 @@ public class LinksService
                 ChatId = transmittedData.ChatId
             });
         }
-        
+
         IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
-        
+
         return new BotTextMessage(
             DialogsStringsStorage.LinkInputDescriptionSuccess,
             InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(linkCategories)
@@ -162,7 +161,35 @@ public class LinksService
             stringBuilder.AppendLine("-----");
         }
         //todo button ЕЩЁ
+        
+        
+        string linksAsText = stringBuilder.ToString();
+        
+        transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryShowLinks;
 
-        return new BotTextMessage(stringBuilder.ToString());
+        return new BotTextMessage(
+            linksAsText,
+            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupShowLinksAll
+        );
+    }
+
+
+    public BotTextMessage ProcessClickOnInlineButtonLinkCategoryShowLinks(string callBackData, TransmittedData transmittedData)
+    {
+        if (callBackData == BotButtonsStorage.ButtonBackwardInShowLinks.CallBackData)
+        {
+            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
+            
+            TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
+            
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuShow,
+                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(linkCategories)
+            );
+        }
+        
+        return new BotTextMessage("aaa");
     }
 }
