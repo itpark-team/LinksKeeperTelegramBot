@@ -2,6 +2,7 @@ using System.Text;
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
+using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
 using Telegram.Bot;
@@ -32,13 +33,26 @@ public class LinksService
         {
             return new BotTextMessage(DialogsStringsStorage.LinkInputDescriptionError);
         }
-
+        
         transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForAdd;
         transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkDescription, description);
+        
+        TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
+        if (tableLinksCategories.ContaintByChatId(transmittedData.ChatId)==false)
+        {
+            tableLinksCategories.AddNew(new LinkCategory()
+            {
+                Name = SystemStringsStorage.FirstLinkCategory,
+                ChatId = transmittedData.ChatId
+            });
+        }
+        
+        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
+        
         return new BotTextMessage(
             DialogsStringsStorage.LinkInputDescriptionSuccess,
-            InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(transmittedData.ChatId)
+            InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(linkCategories)
         );
     }
 
@@ -120,7 +134,7 @@ public class LinksService
             return new BotTextMessage(DialogsStringsStorage.LinkInputUrl);
         }
 
-        return new BotTextMessage();
+        throw new Exception("Bad user request");
     }
 
     public BotTextMessage ProcessClickOnInlineButtonLinkCategoryForShow(string callBackData,

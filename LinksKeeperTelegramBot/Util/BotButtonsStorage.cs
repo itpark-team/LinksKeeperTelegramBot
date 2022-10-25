@@ -26,5 +26,8 @@ public class BotButtonsStorage
     public static BotButton ButtonAddOneInMenuAddAnotherLink { get; } = new BotButton("Добавить ещё", "ButtonAddOneInMenuAddAnotherLink");
     #endregion
     
+    #region ButtonsInMenuMenuShow 
     public static BotButton ButtonBackwardInMenuShow { get; } = new BotButton("Назад", "ButtonBackwardInMenuShow");
+    
+    #endregion
 }

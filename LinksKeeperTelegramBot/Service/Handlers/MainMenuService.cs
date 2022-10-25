@@ -1,5 +1,7 @@
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Model;
+using LinksKeeperTelegramBot.Model.Entities;
+using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
 using NLog;
@@ -44,10 +46,14 @@ public class MainMenuService
             }
 
             transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
+            
+            TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
+            
             return new BotTextMessage(
                 DialogsStringsStorage.MenuShow,
-                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(transmittedData.ChatId)
+                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(linkCategories)
             );
         }
         else if (callBackData == BotButtonsStorage.ButtonEditInMenuMain.CallBackData)
@@ -63,7 +69,7 @@ public class MainMenuService
             return new BotTextMessage("Нажата клавиша Как пользоваться");
         }
 
-        return new BotTextMessage();
+        throw new Exception("Bad user request");
     }
 
     public BotTextMessage ProcessClickOnInlineButtonInMenuAddChoosing(string callBackData, TransmittedData transmittedData)
@@ -76,7 +82,7 @@ public class MainMenuService
         }
         else if (callBackData == BotButtonsStorage.ButtonCategoryInMenuAdd.CallBackData)
         {
-            return new BotTextMessage();
+            throw new Exception("Bad user request");
         }
         else if (callBackData == BotButtonsStorage.ButtonBackwardInMenuAdd.CallBackData)
         {
@@ -88,6 +94,6 @@ public class MainMenuService
             );
         }
 
-        return new BotTextMessage();
+        throw new Exception("Bad user request");
     }
 }

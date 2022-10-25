@@ -8,12 +8,6 @@ public class BotTextMessage
     public string Text { get; }
     public InlineKeyboardMarkup InlineKeyboardMarkup { get; }
     
-    public BotTextMessage()
-    {
-        Text = SystemStringsStorage.Empty;
-        InlineKeyboardMarkup = InlineKeyboardMarkup.Empty();
-    }
-    
     public BotTextMessage(string text)
     {
         Text = text;

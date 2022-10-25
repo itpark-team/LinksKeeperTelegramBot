@@ -63,7 +63,7 @@ public class BotRequestHandlers
             try
             {
                 BotTextMessage botTextMessage = _chatsRouter.Route(chatId, textData);
-
+                
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: botTextMessage.Text,

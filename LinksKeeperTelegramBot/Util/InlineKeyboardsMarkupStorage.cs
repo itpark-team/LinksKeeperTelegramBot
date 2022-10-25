@@ -37,7 +37,7 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonHowToUseInMenuMain.CallBackData),
         },
     });
-    
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAdd = new(new[]
     {
         new[]
@@ -57,21 +57,9 @@ public class InlineKeyboardsMarkupStorage
         }
     });
 
-    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(long chatId)
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(
+        IEnumerable<LinkCategory> linkCategories)
     {
-        TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
-
-        if (tableLinksCategories.ContaintByChatId(chatId)==false)
-        {
-            tableLinksCategories.AddNew(new LinkCategory()
-            {
-                Name = SystemStringsStorage.FirstLinkCategory,
-                ChatId = chatId
-            });
-        }
-        
-        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(chatId);
-
         List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
 
         foreach (LinkCategory linkCategory in linkCategories)
@@ -86,7 +74,7 @@ public class InlineKeyboardsMarkupStorage
 
         return new InlineKeyboardMarkup(keyboardMarkup);
     }
-    
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuApproveAdd = new(new[]
     {
         new[]
@@ -100,7 +88,7 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonNoInMenuApproveAdd.CallBackData),
         }
     });
-    
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAddAnotherLink = new(new[]
     {
         new[]
@@ -114,13 +102,10 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonAddOneInMenuAddAnotherLink.CallBackData),
         }
     });
-    
-    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForShow(long chatId)
-    {
-        TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
-        
-        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(chatId);
 
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForShow(
+        IEnumerable<LinkCategory> linkCategories)
+    {
         List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
 
         foreach (LinkCategory linkCategory in linkCategories)
@@ -132,10 +117,11 @@ public class InlineKeyboardsMarkupStorage
                 }
             );
         }
-        
+
         keyboardMarkup.Add(new()
-        { 
-            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInMenuShow.Name, BotButtonsStorage.ButtonBackwardInMenuShow.CallBackData)
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInMenuShow.Name,
+                BotButtonsStorage.ButtonBackwardInMenuShow.CallBackData)
         });
 
         return new InlineKeyboardMarkup(keyboardMarkup);
