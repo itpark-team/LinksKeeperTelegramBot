@@ -9,7 +9,7 @@ public class DataStorage
         _data = new Dictionary<string, object>();
     }
 
-    public void Add(string key, object value)
+    public void AddOrUpdate(string key, object value)
     {
         _data[key] = value;
     }

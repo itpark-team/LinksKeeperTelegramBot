@@ -22,19 +22,21 @@ public class LinksService
         }
 
         transmittedData.State = State.WaitingInputLinkDescriptionForAdd;
-        transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkUrl, url);
+        transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkUrl, url);
 
         return new BotTextMessage(DialogsStringsStorage.LinkInputUrlSuccess);
     }
 
     public BotTextMessage ProcessInputLinkDescriptionForAdd(string description, TransmittedData transmittedData)
     {
-        if (!(description.Length >= Constants.MinDescriptionLength && description.Length <= Constants.MaxDescriptionLength))
+        if (!(description.Length >= Constants.MinDescriptionLength &&
+              description.Length <= Constants.MaxDescriptionLength))
         {
             return new BotTextMessage(DialogsStringsStorage.LinkInputDescriptionError);
         }
+
         transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForAdd;
-        transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkDescription, description);
+        transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkDescription, description);
 
         TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
@@ -61,7 +63,7 @@ public class LinksService
         int categoryId = int.Parse(categoryIdAsString);
 
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuApproveAdd;
-        transmittedData.DataStorage.Add(SystemStringsStorage.DataStorageKeyLinkCategoryId, categoryId);
+        transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkCategoryId, categoryId);
 
         string url = transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkUrl) as string;
         string description =
@@ -154,42 +156,123 @@ public class LinksService
         IEnumerable<Link> links = DbManager.GetInstance().TableLinks.GetAllByCategoryId(categoryId);
 
         StringBuilder stringBuilder = new StringBuilder();
+
+        bool hasMessageFit = true;
+
         foreach (Link link in links)
         {
+            int stringBuilderTextLength = stringBuilder.Length;
+            int currentLinkTextLength = link.Url.Length + link.Description.Length + SystemStringsStorage.Devider.Length;
+
+            if (stringBuilderTextLength + currentLinkTextLength > Constants.MaxBotTextMessageLength)
+            {
+                hasMessageFit = false;
+                transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId, link.Id);
+                transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksCategoryId,
+                    link.CategoryId);
+                break;
+            }
+
             stringBuilder.AppendLine(link.Url);
             stringBuilder.AppendLine(link.Description);
             stringBuilder.AppendLine("-----");
         }
-        //todo button ЕЩЁ
-        
-        
+
+
         string linksAsText = stringBuilder.ToString();
-        
+        InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.Empty();
+
         transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryShowLinks;
+
+        if (hasMessageFit)
+        {
+            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupShowLinksAll;
+        }
+        else
+        {
+            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupShowLinksMore;
+        }
 
         return new BotTextMessage(
             linksAsText,
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupShowLinksAll
+            inlineKeyboardMarkup
         );
     }
 
-
-    public BotTextMessage ProcessClickOnInlineButtonLinkCategoryShowLinks(string callBackData, TransmittedData transmittedData)
+    public BotTextMessage ProcessClickOnInlineButtonLinkCategoryShowLinks(string callBackData,
+        TransmittedData transmittedData)
     {
         if (callBackData == BotButtonsStorage.ButtonBackwardInShowLinks.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
+            transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId);
+            transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksCategoryId);
             
+            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
+
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
-            
+
             return new BotTextMessage(
                 DialogsStringsStorage.MenuShow,
                 InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(linkCategories)
             );
         }
-        
+        else if (callBackData == BotButtonsStorage.ButtonMoreInShowLinks.CallBackData)
+        {
+            int categoryId =
+                (int)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyShowLinksCategoryId);
+            int startLinkId =
+                (int)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId);
+
+            IEnumerable<Link> links = DbManager.GetInstance().TableLinks
+                .GetAllByCategoryIdWithStartLinkId(categoryId, startLinkId);
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            bool hasMessageFit = true;
+
+            foreach (Link link in links)
+            {
+                int stringBuilderTextLength = stringBuilder.Length;
+                int currentLinkTextLength =
+                    link.Url.Length + link.Description.Length + SystemStringsStorage.Devider.Length;
+
+                if (stringBuilderTextLength + currentLinkTextLength > Constants.MaxBotTextMessageLength)
+                {
+                    hasMessageFit = false;
+                    transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId, link.Id);
+                    transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksCategoryId,
+                        link.CategoryId);
+                    break;
+                }
+
+                stringBuilder.AppendLine(link.Url);
+                stringBuilder.AppendLine(link.Description);
+                stringBuilder.AppendLine("-----");
+            }
+
+            string linksAsText = stringBuilder.ToString();
+            InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.Empty();
+
+            if (hasMessageFit)
+            {
+                transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId);
+                transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksCategoryId);
+                
+                inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupShowLinksAll;
+            }
+            else
+            {
+                inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupShowLinksMore;
+            }
+
+            return new BotTextMessage(
+                linksAsText,
+                inlineKeyboardMarkup
+            );
+        }
+
         return new BotTextMessage("aaa");
     }
 }

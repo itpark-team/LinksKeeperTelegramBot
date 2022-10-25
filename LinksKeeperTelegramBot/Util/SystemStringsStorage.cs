@@ -7,6 +7,7 @@ public class SystemStringsStorage
     public const string CommandReset = "/reset";
     public const string CommandStart = "/start";
     public const string Empty = "empty";
+    public const string Devider = "------";
     
     public const string FirstLinkCategory = "Общее";
     
@@ -14,5 +15,6 @@ public class SystemStringsStorage
     public const string DataStorageKeyLinkDescription = "DataStorageKeyLinkDescription";
     public const string DataStorageKeyLinkCategoryId = "DataStorageKeyLinkCategoryId";
     
-    public const string DataStorageKeyShowLinksLastId = "DataStorageKeyShowLinksLastId";
+    public const string DataStorageKeyShowLinksStartLinkId = "DataStorageKeyShowLinksStartLinkId";
+    public const string DataStorageKeyShowLinksCategoryId = "DataStorageKeyShowLinksCategoryId";
 }
