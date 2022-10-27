@@ -33,7 +33,7 @@ public class ChatsRouter
         //process reset command
         if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
         {
-            return GlobalServices.ProcessCommandReset(transmittedData);
+            return GlobalService.ProcessCommandReset(transmittedData);
         }
         
         return _servicesManager.ProcessBotUpdate(textData, transmittedData);

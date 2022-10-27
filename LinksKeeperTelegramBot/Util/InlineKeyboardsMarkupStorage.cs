@@ -151,4 +151,29 @@ public class InlineKeyboardsMarkupStorage
     });
     
     
+    
+    public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAddAnotherCategory = new(new[]
+    {
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonGotoMainMenuInMenuAddAnotherCategory.Name,
+                BotButtonsStorage.ButtonGotoMainMenuInMenuAddAnotherCategory.CallBackData),
+        },
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonAddOneInMenuAddAnotherCategory.Name,
+                BotButtonsStorage.ButtonAddOneInMenuAddAnotherCategory.CallBackData),
+        }
+    });
+    
+    public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAddCategory = new(new[]
+    {
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonGotoMainMenuInMenuAddCategory.Name,
+                BotButtonsStorage.ButtonGotoMainMenuInMenuAddCategory.CallBackData),
+        }
+    });
+    
+    
 }

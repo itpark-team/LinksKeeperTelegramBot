@@ -16,11 +16,13 @@ public class ServicesManager
 
     private MainMenuService _mainMenuService;
     private LinksService _linksService;
+    private CategoriesService _categoriesService;
 
     public ServicesManager()
     {
         _mainMenuService = new MainMenuService();
         _linksService = new LinksService();
+        _categoriesService = new CategoriesService();
 
         _stateServiceMethodPairs =
             new Dictionary<State, Func<string, TransmittedData, BotTextMessage>>();
@@ -49,9 +51,18 @@ public class ServicesManager
 
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForShow] =
             _linksService.ProcessClickOnInlineButtonLinkCategoryForShow;
-        
+
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryShowLinks] =
             _linksService.ProcessClickOnInlineButtonLinkCategoryShowLinks;
+
+        _stateServiceMethodPairs[State.WaitingInputCategoryForAdd] =
+            _categoriesService.ProcessInputCategoryForAdd;
+
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddAnotherCategory] =
+            _categoriesService.ProcessClickOnInlineButtonInMenuAddAnotherCategory;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddCategory] =
+            _categoriesService.ProcessClickOnInlineButtonInMenuAddCategory;
     }
 
     public BotTextMessage ProcessBotUpdate(string textData, TransmittedData transmittedData)

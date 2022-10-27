@@ -35,4 +35,14 @@ public class BotButtonsStorage
     public static BotButton ButtonBackwardInShowLinks { get; } = new BotButton("Назад", "ButtonBackwardInShowLinks");
     public static BotButton ButtonMoreInShowLinks { get; } = new BotButton("Ещё", "ButtonMoreInShowLinks");
     #endregion
+    
+    #region ButtonsInMenuAddAnotherCategory
+    public static BotButton ButtonGotoMainMenuInMenuAddAnotherCategory { get; } = new BotButton("В главное меню", "ButtonMenuInMenuAddAnotherCategory");
+    public static BotButton ButtonAddOneInMenuAddAnotherCategory { get; } = new BotButton("Добавить ещё", "ButtonAddOneInMenuAddAnotherCategory");
+    #endregion
+
+    #region ButtonsInMenuCategory
+    public static BotButton ButtonGotoMainMenuInMenuAddCategory { get; } = new BotButton("В главное меню", "ButtonGotoMainMenuInMenuAddCategory");
+    #endregion
+    
 }

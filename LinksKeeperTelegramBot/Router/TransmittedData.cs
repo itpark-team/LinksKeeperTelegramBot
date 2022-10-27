@@ -6,7 +6,6 @@ public class TransmittedData
 {
     public State State { get; set; }
     public DataStorage DataStorage { get; }
-    
     public long ChatId { get; }
 
     public TransmittedData(long chatId)

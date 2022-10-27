@@ -8,7 +8,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LinksKeeperTelegramBot.Service.Handlers;
 
-public class GlobalServices
+public class GlobalService
 {
     public static BotTextMessage ProcessCommandReset(TransmittedData transmittedData)
     {

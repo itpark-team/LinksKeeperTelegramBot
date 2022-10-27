@@ -56,7 +56,7 @@ public class TableLinksCategories
         command.ExecuteNonQuery();
     }
 
-    public IEnumerable<LinkCategory> GetAllChatId(long chatId)
+    public IEnumerable<LinkCategory> GetAllByChatId(long chatId)
     {
         string sqlRequest = $"SELECT * FROM links_categories WHERE chat_id={chatId} ORDER BY id ASC";
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);

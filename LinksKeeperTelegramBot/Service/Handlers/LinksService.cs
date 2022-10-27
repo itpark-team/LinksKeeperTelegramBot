@@ -49,7 +49,7 @@ public class LinksService
             });
         }
 
-        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
+        IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
         return new BotTextMessage(
             DialogsStringsStorage.LinkInputDescriptionSuccess,
@@ -211,7 +211,7 @@ public class LinksService
 
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
-            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuShow,

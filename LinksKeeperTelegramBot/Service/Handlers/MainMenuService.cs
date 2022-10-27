@@ -1,3 +1,4 @@
+using System.Text;
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
@@ -46,11 +47,11 @@ public class MainMenuService
             }
 
             transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
-            
+
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
-            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllChatId(transmittedData.ChatId);
-            
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+
             return new BotTextMessage(
                 DialogsStringsStorage.MenuShow,
                 InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(linkCategories)
@@ -72,7 +73,8 @@ public class MainMenuService
         throw new Exception("Bad user request");
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuAddChoosing(string callBackData, TransmittedData transmittedData)
+    public BotTextMessage ProcessClickOnInlineButtonInMenuAddChoosing(string callBackData,
+        TransmittedData transmittedData)
     {
         if (callBackData == BotButtonsStorage.ButtonLinkInMenuAdd.CallBackData)
         {
@@ -82,7 +84,41 @@ public class MainMenuService
         }
         else if (callBackData == BotButtonsStorage.ButtonCategoryInMenuAdd.CallBackData)
         {
-            throw new Exception("Bad user request");
+            IEnumerable<LinkCategory> linkCategories =
+                DbManager.GetInstance().TableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+
+            string replyText = DialogsStringsStorage.MenuCategoryStart;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (LinkCategory linkCategory in linkCategories)
+            {
+                stringBuilder.AppendLine(linkCategory.Name);
+            }
+
+            replyText += stringBuilder + "\n";
+
+            replyText += DialogsStringsStorage.CreateMenuCategoryHowManyUseCategories(linkCategories.Count(),
+                Constants.MaxLinksCategoriesCount);
+
+            if (linkCategories.Count() < Constants.MaxLinksCategoriesCount)
+            {
+                replyText += DialogsStringsStorage.MenuCategoryInputNew;
+                
+                transmittedData.State = State.WaitingInputCategoryForAdd;
+                
+                return new BotTextMessage(replyText);
+            }
+            else
+            {
+                replyText += DialogsStringsStorage.MenuCategoryInputRestrict;
+                
+                transmittedData.State = State.WaitingClickOnInlineButtonInMenuAddCategory;
+                
+                return new BotTextMessage(
+                    replyText,
+                    InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAddCategory
+                );
+            }
         }
         else if (callBackData == BotButtonsStorage.ButtonBackwardInMenuAdd.CallBackData)
         {
