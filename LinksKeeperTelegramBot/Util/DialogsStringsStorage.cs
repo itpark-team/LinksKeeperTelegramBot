@@ -47,4 +47,8 @@ public class DialogsStringsStorage
     
     public const string MenuCategoryInputNew = "Пожалуйста введите название новой категории:";
     public const string MenuCategoryInputRestrict = "К сожалению вы не можете добавить новую категорию пожалуйста удалите старую.\nДля этого вернитесь в главное меню.";
+    
+    public const string MenuDelete = "Выберите, что вы хотите удалить?";
+    
+    public const string MenuDeleteCategory = "Выберите, категорию, которую вы хотите удалить или вернитесь назад";
 }

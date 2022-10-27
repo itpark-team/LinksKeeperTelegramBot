@@ -150,8 +150,6 @@ public class InlineKeyboardsMarkupStorage
         }
     });
     
-    
-    
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAddAnotherCategory = new(new[]
     {
         new[]
@@ -175,5 +173,49 @@ public class InlineKeyboardsMarkupStorage
         }
     });
     
+    
+    public static InlineKeyboardMarkup InlineKeyboardMarkupMenuDelete = new(new[]
+    {
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonLinkInMenuDelete.Name,
+                BotButtonsStorage.ButtonLinkInMenuDelete.CallBackData),
+        },
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonCategoryInMenuDelete.Name,
+                BotButtonsStorage.ButtonCategoryInMenuDelete.CallBackData),
+        },
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInMenuDelete.Name,
+                BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData),
+        }
+    });
+    
+    
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuDeleteCategory(
+        IEnumerable<LinkCategory> linkCategories)
+    {
+        List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
+
+        foreach (LinkCategory linkCategory in linkCategories)
+        {
+            keyboardMarkup.Add(
+                new()
+                {
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, linkCategory.Id.ToString())
+                }
+            );
+        }
+
+        keyboardMarkup.Add(new()
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInMenuDelete.Name,
+                BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData)
+        });
+
+        return new InlineKeyboardMarkup(keyboardMarkup);
+    }
     
 }

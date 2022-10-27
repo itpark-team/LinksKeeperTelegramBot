@@ -2,6 +2,7 @@ using System.Text;
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
+using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
 
@@ -101,5 +102,45 @@ public class CategoriesService
         }
 
         throw new Exception("Bad user request");
+    }
+
+
+    public BotTextMessage ProcessClickOnInlineButtonInMenuDeleteCategory(string callBackData,
+        TransmittedData transmittedData)
+    {
+        if (callBackData == BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData)
+        {
+            transmittedData.State = State.WaitingClickOnInlineButtonInMenuDelete;
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuDelete,
+                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuDelete
+            );
+        }
+
+        int categoryId = int.Parse(callBackData);
+
+        TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+
+        if (tableLinksCategories.GetAllByChatId(transmittedData.ChatId).Count() == Constants.MinLinksCategoriesCount)
+        {
+            return new BotTextMessage("Нельзя удалить категорию. Т.к. у Вас должна остаться минимум одна категория");
+        }
+
+        try
+        {
+            tableLinksCategories.DeleteById(categoryId);
+
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuDeleteCategory,
+                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuDeleteCategory(linkCategories)
+            );
+        }
+        catch (Exception e)
+        {
+            return new BotTextMessage("Ошибка при удалении категории. Категория используется в существующей ссылке");
+        }
     }
 }

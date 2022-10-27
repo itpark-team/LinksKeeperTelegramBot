@@ -63,7 +63,12 @@ public class MainMenuService
         }
         else if (callBackData == BotButtonsStorage.ButtonDeleteInMenuMain.CallBackData)
         {
-            return new BotTextMessage("Нажата клавиша Удалить");
+            transmittedData.State = State.WaitingClickOnInlineButtonInMenuDelete;
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuDelete,
+                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuDelete
+            );
         }
         else if (callBackData == BotButtonsStorage.ButtonHowToUseInMenuMain.CallBackData)
         {
@@ -73,7 +78,7 @@ public class MainMenuService
         throw new Exception("Bad user request");
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuAddChoosing(string callBackData,
+    public BotTextMessage ProcessClickOnInlineButtonInMenuAdd(string callBackData,
         TransmittedData transmittedData)
     {
         if (callBackData == BotButtonsStorage.ButtonLinkInMenuAdd.CallBackData)
@@ -121,6 +126,44 @@ public class MainMenuService
             }
         }
         else if (callBackData == BotButtonsStorage.ButtonBackwardInMenuAdd.CallBackData)
+        {
+            transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuMain,
+                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
+            );
+        }
+
+        throw new Exception("Bad user request");
+    }
+    
+    public BotTextMessage ProcessClickOnInlineButtonInMenuDelete(string callBackData,
+        TransmittedData transmittedData)
+    {
+        if (callBackData == BotButtonsStorage.ButtonLinkInMenuDelete.CallBackData)
+        {
+            throw new Exception("Bad user request");
+        }
+        else if (callBackData == BotButtonsStorage.ButtonCategoryInMenuDelete.CallBackData)
+        {
+            if (DbManager.GetInstance().TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
+            {
+                return new BotTextMessage(DialogsStringsStorage.MenuShowNoCategories);
+            }
+
+            transmittedData.State = State.WaitingClickOnInlineButtonMenuDeleteCategory;
+
+            TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuDeleteCategory,
+                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuDeleteCategory(linkCategories)
+            );
+        }
+        else if (callBackData == BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData)
         {
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
 

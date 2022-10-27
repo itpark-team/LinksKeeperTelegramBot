@@ -45,4 +45,14 @@ public class BotButtonsStorage
     public static BotButton ButtonGotoMainMenuInMenuAddCategory { get; } = new BotButton("В главное меню", "ButtonGotoMainMenuInMenuAddCategory");
     #endregion
     
+    #region ButtonsInMenuDelete
+    public static BotButton ButtonLinkInMenuDelete { get; } = new BotButton("Ссылку", "ButtonLinkInMenuDelete");
+    public static BotButton ButtonCategoryInMenuDelete { get; } = new BotButton("Категория", "ButtonCategoryInMenuDelete");
+    public static BotButton ButtonBackwardInMenuDelete { get; } = new BotButton("Назад", "ButtonBackwardInMenuDelete");
+    #endregion
+    
+    #region ButtonsInDeleteCategory
+    public static BotButton ButtonBackwardDeleteCategory { get; } = new BotButton("Назад", "ButtonBackwardDeleteCategory");
+    #endregion
+    
 }

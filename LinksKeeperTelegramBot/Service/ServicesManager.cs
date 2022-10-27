@@ -33,7 +33,10 @@ public class ServicesManager
             _mainMenuService.ProcessClickOnInlineButtonInMenuMain;
 
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAdd] =
-            _mainMenuService.ProcessClickOnInlineButtonInMenuAddChoosing;
+            _mainMenuService.ProcessClickOnInlineButtonInMenuAdd;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuDelete] =
+            _mainMenuService.ProcessClickOnInlineButtonInMenuDelete;
 
         _stateServiceMethodPairs[State.WaitingInputLinkUrlForAdd] = _linksService.ProcessInputLinkUrlForAdd;
 
@@ -63,6 +66,9 @@ public class ServicesManager
         
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddCategory] =
             _categoriesService.ProcessClickOnInlineButtonInMenuAddCategory;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonMenuDeleteCategory] =
+            _categoriesService.ProcessClickOnInlineButtonInMenuDeleteCategory;
     }
 
     public BotTextMessage ProcessBotUpdate(string textData, TransmittedData transmittedData)

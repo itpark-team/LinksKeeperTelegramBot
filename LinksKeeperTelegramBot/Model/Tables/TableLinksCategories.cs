@@ -46,11 +46,12 @@ public class TableLinksCategories
 
         return exist;
     }
-    
+
     public void AddNew(LinkCategory linkCategory)
     {
-        string sqlRequest = $"INSERT INTO links_categories (name, chat_id) VALUES ('{linkCategory.Name}', {linkCategory.ChatId})";
-        
+        string sqlRequest =
+            $"INSERT INTO links_categories (name, chat_id) VALUES ('{linkCategory.Name}', {linkCategory.ChatId})";
+
         NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
 
         command.ExecuteNonQuery();
@@ -80,5 +81,14 @@ public class TableLinksCategories
         dataReader.Close();
 
         return linkCategories;
+    }
+
+    public void DeleteById(int id)
+    {
+        string sqlRequest = $"DELETE FROM links_categories WHERE id={id}";
+
+        NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
+
+        command.ExecuteNonQuery();
     }
 }
