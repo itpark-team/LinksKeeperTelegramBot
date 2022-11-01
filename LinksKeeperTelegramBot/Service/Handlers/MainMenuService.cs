@@ -57,10 +57,6 @@ public class MainMenuService
                 InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(linkCategories)
             );
         }
-        else if (callBackData == BotButtonsStorage.ButtonEditInMenuMain.CallBackData)
-        {
-            return new BotTextMessage("Нажата клавиша Редактировать");
-        }
         else if (callBackData == BotButtonsStorage.ButtonDeleteInMenuMain.CallBackData)
         {
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuDelete;
@@ -143,7 +139,22 @@ public class MainMenuService
     {
         if (callBackData == BotButtonsStorage.ButtonLinkInMenuDelete.CallBackData)
         {
-            throw new Exception("Bad user request");
+            if (DbManager.GetInstance().TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
+            {
+                return new BotTextMessage(DialogsStringsStorage.MenuDeleteNoCategories);
+            }
+
+            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForDeleteLinks;
+
+            TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuDeleteLink,
+                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForDeleteLink(linkCategories)
+            );
+            
         }
         else if (callBackData == BotButtonsStorage.ButtonCategoryInMenuDelete.CallBackData)
         {

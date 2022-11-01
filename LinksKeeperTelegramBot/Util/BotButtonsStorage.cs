@@ -5,7 +5,6 @@ public class BotButtonsStorage
     #region ButtonsInMenuMain
     public static BotButton ButtonAddInMenuMain { get; } = new BotButton("Добавить", "ButtonAddInMenuMain");
     public static BotButton ButtonShowInMenuMain { get; } = new BotButton("Просмотреть", "ButtonShowInMenuMain");
-    public static BotButton ButtonEditInMenuMain { get; } = new BotButton("Редактировать", "ButtonEditInMenuMain");
     public static BotButton ButtonDeleteInMenuMain { get; } = new BotButton("Удалить", "ButtonDeleteInMenuMain");
     public static BotButton ButtonHowToUseInMenuMain { get; } = new BotButton("Как пользоваться", "ButtonHowToUseInMenuMain");
     #endregion
@@ -53,6 +52,19 @@ public class BotButtonsStorage
     
     #region ButtonsInDeleteCategory
     public static BotButton ButtonBackwardDeleteCategory { get; } = new BotButton("Назад", "ButtonBackwardDeleteCategory");
+    #endregion
+    
+    #region ButtonsInChooseCategoryInDeleteLink
+    public static BotButton ButtonInChooseCategoryInDeleteLink { get; } = new BotButton("Назад", "ButtonsInChooseCategoryInDeleteLink");
+    
+    #endregion
+    
+    #region ButtonsInDeleteLink
+    
+    public static BotButton ButtonMoreInDeleteLink { get; } = new BotButton("Ещё", "ButtonMoreInDeleteLink");
+    
+    public static BotButton ButtonBackwardInDeleteLink { get; } = new BotButton("Назад", "ButtonBackwardInDeleteLink");
+    
     #endregion
     
 }

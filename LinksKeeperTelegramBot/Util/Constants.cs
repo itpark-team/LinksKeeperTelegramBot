@@ -12,4 +12,6 @@ public class Constants
     
     public const int MinCategoryNameLength = 1;
     public const int MaxCategoryNameLength = 64;
+
+    public const int EnterSymbolsLength = 16;
 }

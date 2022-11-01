@@ -86,4 +86,13 @@ public class TableLinks
 
         return links;
     }
+    
+    public void DeleteById(int id)
+    {
+        string sqlRequest = $"DELETE FROM links WHERE id={id}";
+
+        NpgsqlCommand command = new NpgsqlCommand(sqlRequest, _connection);
+
+        command.ExecuteNonQuery();
+    }
 }

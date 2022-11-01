@@ -51,4 +51,8 @@ public class DialogsStringsStorage
     public const string MenuDelete = "Выберите, что вы хотите удалить?";
     
     public const string MenuDeleteCategory = "Выберите, категорию, которую вы хотите удалить или вернитесь назад";
+    
+    public const string MenuDeleteLink = "Выберите, категорию, ссылки в которой вы хотите удалить";
+    
+    public const string MenuDeleteNoCategories = "У вас нет ещё ни одной добавленной ссылки, пожалуйста для удаления вначале добавьте ссылку";
 }

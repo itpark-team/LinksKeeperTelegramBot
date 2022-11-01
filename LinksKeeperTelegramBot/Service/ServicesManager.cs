@@ -69,6 +69,12 @@ public class ServicesManager
         
         _stateServiceMethodPairs[State.WaitingClickOnInlineButtonMenuDeleteCategory] =
             _categoriesService.ProcessClickOnInlineButtonInMenuDeleteCategory;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForDeleteLinks] =
+            _linksService.ProcessClickOnInlineButtonLinkCategoryForDeleteLinks;
+        
+        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonDeleteChosenLink] =
+            _linksService.ProcessClickOnInlineButtonDeleteChosenLink;
     }
 
     public BotTextMessage ProcessBotUpdate(string textData, TransmittedData transmittedData)

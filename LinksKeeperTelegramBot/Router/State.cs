@@ -19,5 +19,8 @@ public enum State
     WaitingClickOnInlineButtonInMenuAddCategory,
     
     WaitingClickOnInlineButtonInMenuDelete,
-    WaitingClickOnInlineButtonMenuDeleteCategory
+    WaitingClickOnInlineButtonMenuDeleteCategory,
+    
+    WaitingClickOnInlineButtonLinkCategoryForDeleteLinks,
+    WaitingClickOnInlineButtonDeleteChosenLink
 }
