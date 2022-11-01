@@ -8,6 +8,8 @@ public class SystemStringsStorage
     public const string CommandStart = "/start";
     public const string Empty = "empty";
     public const string Devider = "------";
+    public const string LinkCategoryIdText = "LCI";
+
     
     public const string FirstLinkCategory = "Общее";
     

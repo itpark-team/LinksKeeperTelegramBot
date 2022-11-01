@@ -67,7 +67,7 @@ public class InlineKeyboardsMarkupStorage
             keyboardMarkup.Add(
                 new()
                 {
-                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, linkCategory.Id.ToString())
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, SystemStringsStorage.LinkCategoryIdText+linkCategory.Id)
                 }
             );
         }
@@ -113,7 +113,7 @@ public class InlineKeyboardsMarkupStorage
             keyboardMarkup.Add(
                 new()
                 {
-                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, linkCategory.Id.ToString())
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, SystemStringsStorage.LinkCategoryIdText+linkCategory.Id)
                 }
             );
         }
@@ -193,7 +193,6 @@ public class InlineKeyboardsMarkupStorage
         }
     });
     
-    
     public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuDeleteCategory(
         IEnumerable<LinkCategory> linkCategories)
     {
@@ -204,7 +203,7 @@ public class InlineKeyboardsMarkupStorage
             keyboardMarkup.Add(
                 new()
                 {
-                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, linkCategory.Id.ToString())
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, SystemStringsStorage.LinkCategoryIdText+linkCategory.Id)
                 }
             );
         }

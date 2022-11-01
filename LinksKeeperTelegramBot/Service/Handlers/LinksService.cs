@@ -60,6 +60,13 @@ public class LinksService
     public BotTextMessage ProcessClickOnInlineButtonLinkCategoryForAdd(string categoryIdAsString,
         TransmittedData transmittedData)
     {
+        if (!categoryIdAsString.StartsWith(SystemStringsStorage.LinkCategoryIdText))
+        {
+            throw new Exception("Bad user request");
+        }
+
+        categoryIdAsString = categoryIdAsString.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
+
         int categoryId = int.Parse(categoryIdAsString);
 
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuApproveAdd;
@@ -150,6 +157,13 @@ public class LinksService
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
             );
         }
+        
+        if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))
+        {
+            throw new Exception("Bad user request");
+        }
+
+        callBackData = callBackData.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
 
         int categoryId = int.Parse(callBackData);
 
@@ -167,7 +181,8 @@ public class LinksService
             if (stringBuilderTextLength + currentLinkTextLength > Constants.MaxBotTextMessageLength)
             {
                 hasMessageFit = false;
-                transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId, link.Id);
+                transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId,
+                    link.Id);
                 transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksCategoryId,
                     link.CategoryId);
                 break;
@@ -206,7 +221,7 @@ public class LinksService
         {
             transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId);
             transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksCategoryId);
-            
+
             transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
 
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
@@ -241,7 +256,8 @@ public class LinksService
                 if (stringBuilderTextLength + currentLinkTextLength > Constants.MaxBotTextMessageLength)
                 {
                     hasMessageFit = false;
-                    transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId, link.Id);
+                    transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId,
+                        link.Id);
                     transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyShowLinksCategoryId,
                         link.CategoryId);
                     break;
@@ -259,7 +275,7 @@ public class LinksService
             {
                 transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId);
                 transmittedData.DataStorage.Delete(SystemStringsStorage.DataStorageKeyShowLinksCategoryId);
-                
+
                 inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.InlineKeyboardMarkupShowLinksAll;
             }
             else

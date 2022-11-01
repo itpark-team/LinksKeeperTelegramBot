@@ -118,6 +118,13 @@ public class CategoriesService
             );
         }
 
+        if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))
+        {
+            throw new Exception("Bad user request");
+        }
+
+        callBackData = callBackData.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
+
         int categoryId = int.Parse(callBackData);
 
         TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
