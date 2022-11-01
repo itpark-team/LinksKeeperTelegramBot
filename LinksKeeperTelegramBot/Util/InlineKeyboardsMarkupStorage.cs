@@ -23,18 +23,12 @@ public class InlineKeyboardsMarkupStorage
         },
         new[]
         {
-            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonEditInMenuMain.Name,
-                BotButtonsStorage.ButtonEditInMenuMain.CallBackData),
-        },
-        new[]
-        {
             InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonDeleteInMenuMain.Name,
                 BotButtonsStorage.ButtonDeleteInMenuMain.CallBackData),
         },
         new[]
         {
-            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonHowToUseInMenuMain.Name,
-                BotButtonsStorage.ButtonHowToUseInMenuMain.CallBackData),
+            InlineKeyboardButton.WithUrl(BotButtonsStorage.ButtonHowToUseInMenuMain.Name, SystemStringsStorage.InstructionUrl),
         },
     });
 
@@ -67,7 +61,8 @@ public class InlineKeyboardsMarkupStorage
             keyboardMarkup.Add(
                 new()
                 {
-                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, SystemStringsStorage.LinkCategoryIdText+linkCategory.Id)
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name,
+                        SystemStringsStorage.LinkCategoryIdText + linkCategory.Id)
                 }
             );
         }
@@ -113,7 +108,8 @@ public class InlineKeyboardsMarkupStorage
             keyboardMarkup.Add(
                 new()
                 {
-                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, SystemStringsStorage.LinkCategoryIdText+linkCategory.Id)
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name,
+                        SystemStringsStorage.LinkCategoryIdText + linkCategory.Id)
                 }
             );
         }
@@ -126,7 +122,7 @@ public class InlineKeyboardsMarkupStorage
 
         return new InlineKeyboardMarkup(keyboardMarkup);
     }
-    
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupShowLinksAll = new(new[]
     {
         new[]
@@ -135,7 +131,7 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonBackwardInShowLinks.CallBackData),
         }
     });
-    
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupShowLinksMore = new(new[]
     {
         new[]
@@ -149,7 +145,7 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonBackwardInShowLinks.CallBackData),
         }
     });
-    
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAddAnotherCategory = new(new[]
     {
         new[]
@@ -163,7 +159,7 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonAddOneInMenuAddAnotherCategory.CallBackData),
         }
     });
-    
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuAddCategory = new(new[]
     {
         new[]
@@ -172,8 +168,8 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonGotoMainMenuInMenuAddCategory.CallBackData),
         }
     });
-    
-    
+
+
     public static InlineKeyboardMarkup InlineKeyboardMarkupMenuDelete = new(new[]
     {
         new[]
@@ -192,7 +188,7 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData),
         }
     });
-    
+
     public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuDeleteCategory(
         IEnumerable<LinkCategory> linkCategories)
     {
@@ -203,7 +199,8 @@ public class InlineKeyboardsMarkupStorage
             keyboardMarkup.Add(
                 new()
                 {
-                    InlineKeyboardButton.WithCallbackData(linkCategory.Name, SystemStringsStorage.LinkCategoryIdText+linkCategory.Id)
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name,
+                        SystemStringsStorage.LinkCategoryIdText + linkCategory.Id)
                 }
             );
         }
@@ -216,5 +213,4 @@ public class InlineKeyboardsMarkupStorage
 
         return new InlineKeyboardMarkup(keyboardMarkup);
     }
-    
 }

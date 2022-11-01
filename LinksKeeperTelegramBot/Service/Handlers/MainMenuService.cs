@@ -57,10 +57,6 @@ public class MainMenuService
                 InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(linkCategories)
             );
         }
-        else if (callBackData == BotButtonsStorage.ButtonEditInMenuMain.CallBackData)
-        {
-            return new BotTextMessage("Нажата клавиша Редактировать");
-        }
         else if (callBackData == BotButtonsStorage.ButtonDeleteInMenuMain.CallBackData)
         {
             transmittedData.State = State.WaitingClickOnInlineButtonInMenuDelete;

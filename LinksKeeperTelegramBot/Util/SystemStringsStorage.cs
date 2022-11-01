@@ -9,6 +9,8 @@ public class SystemStringsStorage
     public const string Empty = "empty";
     public const string Devider = "------";
     public const string LinkCategoryIdText = "LCI";
+    public const string InstructionUrl = "https://docs.google.com/document/d/1O2H8ToTZTxwTb5IETAg9nm3vheHmI-yKaE4ktDQW_Og/edit?usp=sharing";
+    
 
     
     public const string FirstLinkCategory = "Общее";
