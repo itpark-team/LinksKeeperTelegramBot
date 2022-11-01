@@ -54,4 +54,17 @@ public class BotButtonsStorage
     public static BotButton ButtonBackwardDeleteCategory { get; } = new BotButton("Назад", "ButtonBackwardDeleteCategory");
     #endregion
     
+    #region ButtonsInChooseCategoryInDeleteLink
+    public static BotButton ButtonInChooseCategoryInDeleteLink { get; } = new BotButton("Назад", "ButtonsInChooseCategoryInDeleteLink");
+    
+    #endregion
+    
+    #region ButtonsInDeleteLink
+    
+    public static BotButton ButtonMoreInDeleteLink { get; } = new BotButton("Ещё", "ButtonMoreInDeleteLink");
+    
+    public static BotButton ButtonBackwardInDeleteLink { get; } = new BotButton("Назад", "ButtonBackwardInDeleteLink");
+    
+    #endregion
+    
 }

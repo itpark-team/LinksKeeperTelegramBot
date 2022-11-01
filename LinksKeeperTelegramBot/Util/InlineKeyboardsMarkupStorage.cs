@@ -28,7 +28,8 @@ public class InlineKeyboardsMarkupStorage
         },
         new[]
         {
-            InlineKeyboardButton.WithUrl(BotButtonsStorage.ButtonHowToUseInMenuMain.Name, SystemStringsStorage.InstructionUrl),
+            InlineKeyboardButton.WithUrl(BotButtonsStorage.ButtonHowToUseInMenuMain.Name,
+                SystemStringsStorage.InstructionUrl),
         },
     });
 
@@ -209,6 +210,86 @@ public class InlineKeyboardsMarkupStorage
         {
             InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInMenuDelete.Name,
                 BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData)
+        });
+
+        return new InlineKeyboardMarkup(keyboardMarkup);
+    }
+
+
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupMenuLinkCategoryForDeleteLink(
+        IEnumerable<LinkCategory> linkCategories)
+    {
+        List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
+
+        foreach (LinkCategory linkCategory in linkCategories)
+        {
+            keyboardMarkup.Add(
+                new()
+                {
+                    InlineKeyboardButton.WithCallbackData(linkCategory.Name,
+                        SystemStringsStorage.LinkCategoryIdText + linkCategory.Id)
+                }
+            );
+        }
+
+        keyboardMarkup.Add(new()
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonInChooseCategoryInDeleteLink.Name,
+                BotButtonsStorage.ButtonInChooseCategoryInDeleteLink.CallBackData)
+        });
+
+        return new InlineKeyboardMarkup(keyboardMarkup);
+    }
+
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupDeleteLinksAll(IEnumerable<Link> links)
+    {
+        List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
+
+        foreach (Link link in links)
+        {
+            keyboardMarkup.Add(
+                new()
+                {
+                    InlineKeyboardButton.WithCallbackData(SystemStringsStorage.DeleteLinkPhrase + link.Id,
+                        SystemStringsStorage.LinkIdText + link.Id)
+                }
+            );
+        }
+
+        keyboardMarkup.Add(new()
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInDeleteLink.Name,
+                BotButtonsStorage.ButtonBackwardInDeleteLink.CallBackData)
+        });
+
+        return new InlineKeyboardMarkup(keyboardMarkup);
+    }
+    
+    public static InlineKeyboardMarkup CreateInlineKeyboardMarkupDeleteLinksAllMore(IEnumerable<Link> links)
+    {
+        List<List<InlineKeyboardButton>> keyboardMarkup = new List<List<InlineKeyboardButton>>();
+
+        foreach (Link link in links)
+        {
+            keyboardMarkup.Add(
+                new()
+                {
+                    InlineKeyboardButton.WithCallbackData(SystemStringsStorage.DeleteLinkPhrase + link.Id,
+                        SystemStringsStorage.LinkIdText + link.Id)
+                }
+            );
+        }
+
+        keyboardMarkup.Add(new()
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonMoreInDeleteLink.Name,
+                BotButtonsStorage.ButtonMoreInDeleteLink.CallBackData)
+        });
+        
+        keyboardMarkup.Add(new()
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonBackwardInDeleteLink.Name,
+                BotButtonsStorage.ButtonBackwardInDeleteLink.CallBackData)
         });
 
         return new InlineKeyboardMarkup(keyboardMarkup);
