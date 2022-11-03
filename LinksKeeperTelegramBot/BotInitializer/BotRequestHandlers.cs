@@ -62,8 +62,9 @@ public class BotRequestHandlers
         {
             try
             {
-                BotTextMessage botTextMessage = _chatsRouter.Route(chatId, textData);
-                
+                BotTextMessage botTextMessage =
+                    await Task.Run(() => _chatsRouter.Route(chatId, textData), cancellationToken);
+
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: botTextMessage.Text,

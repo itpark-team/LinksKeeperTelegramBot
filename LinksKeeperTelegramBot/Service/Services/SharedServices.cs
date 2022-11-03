@@ -6,9 +6,9 @@ using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace LinksKeeperTelegramBot.Service.Handlers;
+namespace LinksKeeperTelegramBot.Service.Services;
 
-public class GlobalService
+public class SharedServices
 {
     public static BotTextMessage ProcessCommandReset(TransmittedData transmittedData)
     {

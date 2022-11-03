@@ -1,10 +1,8 @@
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Service;
-using LinksKeeperTelegramBot.Service.Handlers;
+using LinksKeeperTelegramBot.Service.Services;
 using LinksKeeperTelegramBot.Util;
 using NLog;
-using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace LinksKeeperTelegramBot.Router;
 
@@ -33,7 +31,7 @@ public class ChatsRouter
         //process reset command
         if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
         {
-            return GlobalService.ProcessCommandReset(transmittedData);
+            return SharedServices.ProcessCommandReset(transmittedData);
         }
         
         return _servicesManager.ProcessBotUpdate(textData, transmittedData);
