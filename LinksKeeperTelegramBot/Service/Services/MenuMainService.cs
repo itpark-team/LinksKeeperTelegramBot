@@ -4,6 +4,7 @@ using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Router;
+using LinksKeeperTelegramBot.Service.Services;
 using LinksKeeperTelegramBot.Util;
 using NLog;
 
@@ -20,12 +21,7 @@ public class MenuMainService
             return new BotTextMessage(DialogsStringsStorage.CommandStartInputErrorInput);
         }
 
-        transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-
-        return new BotTextMessage(
-            DialogsStringsStorage.MenuMain,
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
-        );
+        return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
     }
 
     public BotTextMessage ProcessClickOnInlineButtonInMenuMain(string callBackData, TransmittedData transmittedData)
@@ -66,15 +62,6 @@ public class MenuMainService
                 InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuDelete
             );
         }
-        else if (callBackData == BotButtonsStorage.ButtonHowToUseInMenuMain.CallBackData)
-        {
-            return new BotTextMessage("Нажата клавиша Как пользоваться");
-        }
-
         throw new Exception("Bad user request");
     }
-
-    
-    
-   
 }

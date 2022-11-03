@@ -53,12 +53,7 @@ public class MenuPointDeleteServices
         }
         else if (callBackData == BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-
-            return new BotTextMessage(
-                DialogsStringsStorage.MenuMain,
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
-            );
+            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
         }
 
         throw new Exception("Bad user request");

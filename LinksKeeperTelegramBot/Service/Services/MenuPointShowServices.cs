@@ -16,12 +16,7 @@ public class MenuPointShowServices
     {
         if (callBackData == BotButtonsStorage.ButtonBackwardInMenuShow.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-
-            return new BotTextMessage(
-                DialogsStringsStorage.MenuMain,
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
-            );
+            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
         }
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))

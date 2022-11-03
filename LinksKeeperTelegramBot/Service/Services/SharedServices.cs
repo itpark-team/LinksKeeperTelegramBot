@@ -1,5 +1,7 @@
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Model;
+using LinksKeeperTelegramBot.Model.Entities;
+using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
 using NLog;
@@ -17,5 +19,15 @@ public class SharedServices
 
         return new BotTextMessage(DialogsStringsStorage.MenuMain,
             InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain);
+    }
+
+    public static BotTextMessage GotoProcessClickOnInlineButtonInMenuMain(TransmittedData transmittedData)
+    {
+        transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
+
+        return new BotTextMessage(
+            DialogsStringsStorage.MenuMain,
+            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
+        );
     }
 }
