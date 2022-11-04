@@ -12,19 +12,11 @@ namespace LinksKeeperTelegramBot.Service.Services;
 
 public class SharedServices
 {
-    public static BotTextMessage ProcessCommandReset(TransmittedData transmittedData)
-    {
-        transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-        transmittedData.DataStorage.Clear();
-
-        return new BotTextMessage(DialogsStringsStorage.MenuMain,
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain);
-    }
-
     public static BotTextMessage GotoProcessClickOnInlineButtonInMenuMain(TransmittedData transmittedData)
     {
         transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
-
+        transmittedData.DataStorage.Clear();
+        
         return new BotTextMessage(
             DialogsStringsStorage.MenuMain,
             InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain

@@ -31,7 +31,7 @@ public class ChatsRouter
         //process reset command
         if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
         {
-            return SharedServices.ProcessCommandReset(transmittedData);
+            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
         }
         
         return _servicesManager.ProcessBotUpdate(textData, transmittedData);

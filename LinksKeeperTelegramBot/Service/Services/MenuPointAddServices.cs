@@ -47,7 +47,6 @@ public class MenuPointAddServices
             );
         }
     }
-
     #endregion
 
     public BotTextMessage ProcessClickOnInlineButtonInMenuAdd(string callBackData,
