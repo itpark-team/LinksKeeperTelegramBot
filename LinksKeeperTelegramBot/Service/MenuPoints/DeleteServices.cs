@@ -7,21 +7,21 @@ using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace LinksKeeperTelegramBot.Service.Services;
+namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class MenuPointDeleteServices
+public class DeleteServices
 {
-     public BotTextMessage ProcessClickOnInlineButtonInMenuDelete(string callBackData,
+     public BotTextMessage ProcessClickInMenuDelete(string callBackData,
         TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonLinkInMenuDelete.CallBackData)
+        if (callBackData == BotButtonsStorage.LinkInMenuDelete.CallBackData)
         {
             if (DbManager.GetInstance().TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
             {
                 return new BotTextMessage(DialogsStringsStorage.MenuDeleteNoCategories);
             }
 
-            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForDeleteLinks;
+            transmittedData.State = State.ClickLinkCategoryLinksDelete;
 
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
@@ -29,18 +29,18 @@ public class MenuPointDeleteServices
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuDeleteLink,
-                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForDeleteLink(linkCategories)
+                InlineKeyboardsMarkupStorage.CreateMenuLinkCategoryLinkDelete(linkCategories)
             );
             
         }
-        else if (callBackData == BotButtonsStorage.ButtonCategoryInMenuDelete.CallBackData)
+        else if (callBackData == BotButtonsStorage.CategoryInMenuDelete.CallBackData)
         {
             if (DbManager.GetInstance().TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
             {
                 return new BotTextMessage(DialogsStringsStorage.MenuShowNoCategories);
             }
 
-            transmittedData.State = State.WaitingClickOnInlineButtonMenuDeleteCategory;
+            transmittedData.State = State.ClickMenuCategoryDelete;
 
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
@@ -48,27 +48,27 @@ public class MenuPointDeleteServices
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuDeleteCategory,
-                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuDeleteCategory(linkCategories)
+                InlineKeyboardsMarkupStorage.CreateMenuCategoryDelete(linkCategories)
             );
         }
-        else if (callBackData == BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData)
+        else if (callBackData == BotButtonsStorage.BackwardInMenuDelete.CallBackData)
         {
-            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
+            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
 
         throw new Exception("Bad user request");
     }
      
-      public BotTextMessage ProcessClickOnInlineButtonLinkCategoryForDeleteLinks(string callBackData,
+      public BotTextMessage ProcessClickClickLinkCategoryLinksDelete(string callBackData,
         TransmittedData transmittedData)
     {
         if (callBackData == BotButtonsStorage.ButtonInChooseCategoryInDeleteLink.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuDelete;
+            transmittedData.State = State.ClickInMenuDelete;
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuDelete,
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuDelete
+                InlineKeyboardsMarkupStorage.MenuDelete
             );
         }
 
@@ -117,15 +117,15 @@ public class MenuPointDeleteServices
         string linksAsText = stringBuilder.ToString();
         InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.Empty();
 
-        transmittedData.State = State.WaitingClickOnInlineButtonDeleteChosenLink;
+        transmittedData.State = State.ClickChosenLinkDelete;
 
         if (hasMessageFit)
         {
-            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupDeleteLinksAll(fitLinks);
+            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateLinksAllDelete(fitLinks);
         }
         else
         {
-            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupDeleteLinksAllMore(fitLinks);
+            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateLinksAllMoreDelete(fitLinks);
         }
 
         return new BotTextMessage(
@@ -135,12 +135,12 @@ public class MenuPointDeleteServices
 
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonDeleteChosenLink(string callBackData,
+    public BotTextMessage ProcessClickChosenLinkDelete(string callBackData,
         TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonBackwardInDeleteLink.CallBackData)
+        if (callBackData == BotButtonsStorage.BackwardInLinkDelete.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForDeleteLinks;
+            transmittedData.State = State.ClickLinkCategoryLinksDelete;
 
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
@@ -148,10 +148,10 @@ public class MenuPointDeleteServices
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuDeleteLink,
-                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForDeleteLink(linkCategories)
+                InlineKeyboardsMarkupStorage.CreateMenuLinkCategoryLinkDelete(linkCategories)
             );
         }
-        else if (callBackData == BotButtonsStorage.ButtonMoreInDeleteLink.CallBackData)
+        else if (callBackData == BotButtonsStorage.MoreInLinkDelete.CallBackData)
         {
             int startLinkIdMore =
                 (int)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyShowLinksStartLinkIdForDelete);
@@ -196,11 +196,11 @@ public class MenuPointDeleteServices
             
             if (hasMessageFitMore)
             {
-                inlineKeyboardMarkupMore = InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupDeleteLinksAll(fitLinksMore);
+                inlineKeyboardMarkupMore = InlineKeyboardsMarkupStorage.CreateLinksAllDelete(fitLinksMore);
             }
             else
             {
-                inlineKeyboardMarkupMore = InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupDeleteLinksAllMore(fitLinksMore);
+                inlineKeyboardMarkupMore = InlineKeyboardsMarkupStorage.CreateLinksAllMoreDelete(fitLinksMore);
             }
 
             return new BotTextMessage(
@@ -257,11 +257,11 @@ public class MenuPointDeleteServices
 
         if (hasMessageFit)
         {
-            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupDeleteLinksAll(fitLinks);
+            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateLinksAllDelete(fitLinks);
         }
         else
         {
-            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupDeleteLinksAllMore(fitLinks);
+            inlineKeyboardMarkup = InlineKeyboardsMarkupStorage.CreateLinksAllMoreDelete(fitLinks);
         }
         
         return new BotTextMessage(
@@ -270,16 +270,16 @@ public class MenuPointDeleteServices
         );
     }
     
-    public BotTextMessage ProcessClickOnInlineButtonInMenuDeleteCategory(string callBackData,
+    public BotTextMessage ProcessClickMenuCategoryDelete(string callBackData,
         TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonBackwardInMenuDelete.CallBackData)
+        if (callBackData == BotButtonsStorage.BackwardInMenuDelete.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuDelete;
+            transmittedData.State = State.ClickInMenuDelete;
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuDelete,
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuDelete
+                InlineKeyboardsMarkupStorage.MenuDelete
             );
         }
 
@@ -307,7 +307,7 @@ public class MenuPointDeleteServices
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuDeleteCategory,
-                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuDeleteCategory(linkCategories)
+                InlineKeyboardsMarkupStorage.CreateMenuCategoryDelete(linkCategories)
             );
         }
         catch (Exception e)

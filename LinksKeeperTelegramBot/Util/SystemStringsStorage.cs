@@ -20,7 +20,6 @@ public class SystemStringsStorage
     
     public const string DataStorageKeyLinkUrl = "DataStorageKeyLinkUrl";
     public const string DataStorageKeyLinkDescription = "DataStorageKeyLinkDescription";
-    public const string DataStorageKeyLinkCategoryId = "DataStorageKeyLinkCategoryId";
     
     public const string DataStorageKeyLink = "DataStorageKeyLink";
     

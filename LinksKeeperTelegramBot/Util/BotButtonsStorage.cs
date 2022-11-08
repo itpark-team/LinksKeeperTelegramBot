@@ -3,55 +3,55 @@ namespace LinksKeeperTelegramBot.Util;
 public class BotButtonsStorage
 {
     #region ButtonsInMenuMain
-    public static BotButton ButtonAddInMenuMain { get; } = new BotButton("Добавить", "ButtonAddInMenuMain");
-    public static BotButton ButtonShowInMenuMain { get; } = new BotButton("Просмотреть", "ButtonShowInMenuMain");
-    public static BotButton ButtonDeleteInMenuMain { get; } = new BotButton("Удалить", "ButtonDeleteInMenuMain");
-    public static BotButton ButtonHowToUseInMenuMain { get; } = new BotButton("Как пользоваться", "ButtonHowToUseInMenuMain");
+    public static BotButton AddInMenuMain { get; } = new BotButton("Добавить", "AddInMenuMain");
+    public static BotButton ShowInMenuMain { get; } = new BotButton("Просмотреть", "ShowInMenuMain");
+    public static BotButton DeleteInMenuMain { get; } = new BotButton("Удалить", "DeleteInMenuMain");
+    public static BotButton HowToUseInMenuMain { get; } = new BotButton("Как пользоваться", "HowToUseInMenuMain");
     #endregion
 
     #region ButtonsInMenuAdd
-    public static BotButton ButtonLinkInMenuAdd { get; } = new BotButton("Ссылку", "ButtonLinkInMenuAdd");
-    public static BotButton ButtonCategoryInMenuAdd { get; } = new BotButton("Категория", "ButtonCategoryInMenuAdd");
-    public static BotButton ButtonBackwardInMenuAdd { get; } = new BotButton("Назад", "ButtonBackwardInMenuAdd");
+    public static BotButton LinkInMenuAdd { get; } = new BotButton("Ссылку", "LinkInMenuAdd");
+    public static BotButton CategoryInMenuAdd { get; } = new BotButton("Категория", "CategoryInMenuAdd");
+    public static BotButton BackwardInMenuAdd { get; } = new BotButton("Назад", "BackwardInMenuAdd");
     #endregion
     
     #region ButtonsInMenuApproveAdd
-    public static BotButton ButtonYesInMenuApproveAdd { get; } = new BotButton("Да", "ButtonYesInMenuApproveAdd");
-    public static BotButton ButtonNoInMenuApproveAdd { get; } = new BotButton("Нет", "ButtonNoInMenuApproveAdd");
+    public static BotButton YesInMenuApproveAdd { get; } = new BotButton("Да", "YesInMenuApproveAdd");
+    public static BotButton NoInMenuApproveAdd { get; } = new BotButton("Нет", "NoInMenuApproveAdd");
     #endregion
     
     #region ButtonsInMenuAddAnotherLink 
-    public static BotButton ButtonGotoMainMenuInMenuAddAnotherLink { get; } = new BotButton("В главное меню", "ButtonMenuInMenuAddAnotherLink");
-    public static BotButton ButtonAddOneInMenuAddAnotherLink { get; } = new BotButton("Добавить ещё", "ButtonAddOneInMenuAddAnotherLink");
+    public static BotButton GotoMainMenuInMenuAnotherLinkAdd { get; } = new BotButton("В главное меню", "GotoMainMenuInMenuAnotherLinkAdd");
+    public static BotButton AddOneInMenuAnotherLinkAdd { get; } = new BotButton("Добавить ещё", "AddOneInMenuAnotherLinkAdd");
     #endregion
     
     #region ButtonsInMenuMenuShow 
-    public static BotButton ButtonBackwardInMenuShow { get; } = new BotButton("Назад", "ButtonBackwardInMenuShow");
+    public static BotButton BackwardInMenuShow { get; } = new BotButton("Назад", "BackwardInMenuShow");
     
     #endregion
     
     #region ButtonsInShowLinks 
-    public static BotButton ButtonBackwardInShowLinks { get; } = new BotButton("Назад", "ButtonBackwardInShowLinks");
-    public static BotButton ButtonMoreInShowLinks { get; } = new BotButton("Ещё", "ButtonMoreInShowLinks");
+    public static BotButton BackwardInLinksShow { get; } = new BotButton("Назад", "BackwardInLinksShow");
+    public static BotButton MoreInLinksShow { get; } = new BotButton("Ещё", "MoreInLinksShow");
     #endregion
     
     #region ButtonsInMenuAddAnotherCategory
-    public static BotButton ButtonGotoMainMenuInMenuAddAnotherCategory { get; } = new BotButton("В главное меню", "ButtonMenuInMenuAddAnotherCategory");
-    public static BotButton ButtonAddOneInMenuAddAnotherCategory { get; } = new BotButton("Добавить ещё", "ButtonAddOneInMenuAddAnotherCategory");
+    public static BotButton GotoMainMenuInMenuAnotherCategoryAdd { get; } = new BotButton("В главное меню", "GotoMainMenuInMenuAnotherCategoryAdd");
+    public static BotButton AddOneInMenuAnotherCategoryAdd { get; } = new BotButton("Добавить ещё", "AddOneInMenuAnotherCategoryAdd");
     #endregion
 
     #region ButtonsInMenuCategory
-    public static BotButton ButtonGotoMainMenuInMenuAddCategory { get; } = new BotButton("В главное меню", "ButtonGotoMainMenuInMenuAddCategory");
+    public static BotButton GotoMainMenuInMenuCategoryAdd { get; } = new BotButton("В главное меню", "GotoMainMenuInMenuCategoryAdd");
     #endregion
     
     #region ButtonsInMenuDelete
-    public static BotButton ButtonLinkInMenuDelete { get; } = new BotButton("Ссылку", "ButtonLinkInMenuDelete");
-    public static BotButton ButtonCategoryInMenuDelete { get; } = new BotButton("Категория", "ButtonCategoryInMenuDelete");
-    public static BotButton ButtonBackwardInMenuDelete { get; } = new BotButton("Назад", "ButtonBackwardInMenuDelete");
+    public static BotButton LinkInMenuDelete { get; } = new BotButton("Ссылку", "LinkInMenuDelete");
+    public static BotButton CategoryInMenuDelete { get; } = new BotButton("Категория", "CategoryInMenuDelete");
+    public static BotButton BackwardInMenuDelete { get; } = new BotButton("Назад", "BackwardInMenuDelete");
     #endregion
     
     #region ButtonsInDeleteCategory
-    public static BotButton ButtonBackwardDeleteCategory { get; } = new BotButton("Назад", "ButtonBackwardDeleteCategory");
+    public static BotButton BackwardCategoryDelete { get; } = new BotButton("Назад", "BackwardCategoryDelete");
     #endregion
     
     #region ButtonsInChooseCategoryInDeleteLink
@@ -61,9 +61,9 @@ public class BotButtonsStorage
     
     #region ButtonsInDeleteLink
     
-    public static BotButton ButtonMoreInDeleteLink { get; } = new BotButton("Ещё", "ButtonMoreInDeleteLink");
+    public static BotButton MoreInLinkDelete { get; } = new BotButton("Ещё", "MoreInLinkDelete");
     
-    public static BotButton ButtonBackwardInDeleteLink { get; } = new BotButton("Назад", "ButtonBackwardInDeleteLink");
+    public static BotButton BackwardInLinkDelete { get; } = new BotButton("Назад", "BackwardInLinkDelete");
     
     #endregion
     

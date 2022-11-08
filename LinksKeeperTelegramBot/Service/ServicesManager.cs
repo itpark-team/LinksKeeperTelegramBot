@@ -1,7 +1,6 @@
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Router;
-using LinksKeeperTelegramBot.Service.Handlers;
-using LinksKeeperTelegramBot.Service.Services;
+using LinksKeeperTelegramBot.Service.MenuPoints;
 using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -13,90 +12,90 @@ public class ServicesManager
     private static ILogger Logger = LogManager.GetCurrentClassLogger();
 
     private Dictionary<State, Func<string, TransmittedData, BotTextMessage>>
-        _stateServiceMethodPairs;
+        _methods;
 
-    private MenuMainService _menuMainService;
-    private MenuPointAddServices _menuPointAddServices;
-    private MenuPointShowServices _menuPointShowServices;
-    private MenuPointDeleteServices _menuPointDeleteServices;
+    private MainMenuService _mainMenuService;
+    private AddServices _addServices;
+    private ShowServices _showServices;
+    private DeleteServices _deleteServices;
 
     public ServicesManager()
     {
-        _menuMainService = new MenuMainService();
-        _menuPointAddServices = new MenuPointAddServices();
-        _menuPointShowServices = new MenuPointShowServices();
-        _menuPointDeleteServices = new MenuPointDeleteServices();
+        _mainMenuService = new MainMenuService();
+        _addServices = new AddServices();
+        _showServices = new ShowServices();
+        _deleteServices = new DeleteServices();
 
-        _stateServiceMethodPairs =
+        _methods =
             new Dictionary<State, Func<string, TransmittedData, BotTextMessage>>();
 
         #region MenuMainService
 
-        _stateServiceMethodPairs[State.WaitingCommandStart] = _menuMainService.ProcessCommandStart;
+        _methods[State.CommandStart] = _mainMenuService.ProcessCommandStart;
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuMain] =
-            _menuMainService.ProcessClickOnInlineButtonInMenuMain;
+        _methods[State.ClickInMenuMain] =
+            _mainMenuService.ProcessClickInMenuMain;
 
         #endregion
         
         #region MenuPointAddServices
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAdd] =
-            _menuPointAddServices.ProcessClickOnInlineButtonInMenuAdd;
+        _methods[State.ClickInMenuAdd] =
+            _addServices.ProcessClickInMenuAdd;
         
-        _stateServiceMethodPairs[State.WaitingInputLinkUrlForAdd] = _menuPointAddServices.ProcessInputLinkUrlForAdd;
+        _methods[State.InputLinkUrlAdd] = _addServices.ProcessInputLinkUrlAdd;
 
-        _stateServiceMethodPairs[State.WaitingInputLinkDescriptionForAdd] =
-            _menuPointAddServices.ProcessInputLinkDescriptionForAdd;
+        _methods[State.InputLinkDescriptionAdd] =
+            _addServices.ProcessInputLinkDescriptionAdd;
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForAdd] =
-            _menuPointAddServices.ProcessClickOnInlineButtonLinkCategoryForAdd;
+        _methods[State.ClickLinkCategoryAdd] =
+            _addServices.ProcessClickLinkCategoryAdd;
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuApproveAdd] =
-            _menuPointAddServices.ProcessClickOnInlineButtonInMenuApproveAdd;
+        _methods[State.ClickInMenuApproveAdd] =
+            _addServices.ProcessClickInMenuApproveAdd;
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddAnotherLink] =
-            _menuPointAddServices.ProcessClickOnInlineButtonInMenuAddAnotherLink;
+        _methods[State.ClickInMenuAnotherLinkAdd] =
+            _addServices.ProcessClickInMenuAnotherLinkAdd;
 
-        _stateServiceMethodPairs[State.WaitingInputCategoryForAdd] =
-            _menuPointAddServices.ProcessInputCategoryForAdd;
+        _methods[State.InputCategoryAdd] =
+            _addServices.ProcessInputCategoryAdd;
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddAnotherCategory] =
-            _menuPointAddServices.ProcessClickOnInlineButtonInMenuAddAnotherCategory;
+        _methods[State.ClickInMenuAnotherCategoryAdd] =
+            _addServices.ProcessClickInMenuAnotherCategoryAdd;
         
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuAddCategory] =
-            _menuPointAddServices.ProcessClickOnInlineButtonInMenuAddCategory;
+        _methods[State.ClickInMenuCategoryAdd] =
+            _addServices.ProcessClickInMenuCategoryAdd;
 
 
         #endregion
 
         #region MenuPointShowServices
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForShow] =
-            _menuPointShowServices.ProcessClickOnInlineButtonLinkCategoryForShow;
+        _methods[State.ClickLinkCategoryShow] =
+            _showServices.ProcessClickLinkCategoryShow;
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryShowLinks] =
-            _menuPointShowServices.ProcessClickOnInlineButtonLinkCategoryShowLinks;
+        _methods[State.ClickLinkCategoryLinksShow] =
+            _showServices.ProcessClickLinkCategoryLinksShow;
         #endregion
         
         #region MenuPointDeleteServices
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonInMenuDelete] =
-            _menuPointDeleteServices.ProcessClickOnInlineButtonInMenuDelete;
+        _methods[State.ClickInMenuDelete] =
+            _deleteServices.ProcessClickInMenuDelete;
         
 
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonMenuDeleteCategory] =
-            _menuPointDeleteServices.ProcessClickOnInlineButtonInMenuDeleteCategory;
+        _methods[State.ClickMenuCategoryDelete] =
+            _deleteServices.ProcessClickMenuCategoryDelete;
         
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonLinkCategoryForDeleteLinks] =
-            _menuPointDeleteServices.ProcessClickOnInlineButtonLinkCategoryForDeleteLinks;
+        _methods[State.ClickLinkCategoryLinksDelete] =
+            _deleteServices.ProcessClickClickLinkCategoryLinksDelete;
         
-        _stateServiceMethodPairs[State.WaitingClickOnInlineButtonDeleteChosenLink] =
-            _menuPointDeleteServices.ProcessClickOnInlineButtonDeleteChosenLink;
+        _methods[State.ClickChosenLinkDelete] =
+            _deleteServices.ProcessClickChosenLinkDelete;
         #endregion
     }
 
     public BotTextMessage ProcessBotUpdate(string textData, TransmittedData transmittedData)
     {
-        var serviceMethod = _stateServiceMethodPairs[transmittedData.State];
+        var serviceMethod = _methods[transmittedData.State];
 
         return serviceMethod.Invoke(textData, transmittedData);
     }

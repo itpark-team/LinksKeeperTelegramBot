@@ -6,11 +6,11 @@ using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
 
-namespace LinksKeeperTelegramBot.Service.Services;
+namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class MenuPointAddServices
+public class AddServices
 {
-    #region SharedMethods
+    #region CommonMethods
     private BotTextMessage DisplayCategories(TransmittedData transmittedData)
     {
         IEnumerable<LinkCategory> linkCategories =
@@ -33,43 +33,43 @@ public class MenuPointAddServices
         {
             replyText += DialogsStringsStorage.MenuCategoryInputNew;
 
-            transmittedData.State = State.WaitingInputCategoryForAdd;
+            transmittedData.State = State.InputCategoryAdd;
             return new BotTextMessage(replyText);
         }
         else
         {
             replyText += DialogsStringsStorage.MenuCategoryInputRestrict;
 
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuAddCategory;
+            transmittedData.State = State.ClickInMenuCategoryAdd;
             return new BotTextMessage(
                 replyText,
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAddCategory
+                InlineKeyboardsMarkupStorage.MenuCategoryAdd
             );
         }
     }
     #endregion
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuAdd(string callBackData,
+    public BotTextMessage ProcessClickInMenuAdd(string callBackData,
         TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonLinkInMenuAdd.CallBackData)
+        if (callBackData == BotButtonsStorage.LinkInMenuAdd.CallBackData)
         {
-            transmittedData.State = State.WaitingInputLinkUrlForAdd;
+            transmittedData.State = State.InputLinkUrlAdd;
             return new BotTextMessage(DialogsStringsStorage.LinkInputUrl);
         }
-        else if (callBackData == BotButtonsStorage.ButtonCategoryInMenuAdd.CallBackData)
+        else if (callBackData == BotButtonsStorage.CategoryInMenuAdd.CallBackData)
         {
             return DisplayCategories(transmittedData);
         }
-        else if (callBackData == BotButtonsStorage.ButtonBackwardInMenuAdd.CallBackData)
+        else if (callBackData == BotButtonsStorage.BackwardInMenuAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
+            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
 
         throw new Exception("Bad user request");
     }
 
-    public BotTextMessage ProcessInputLinkUrlForAdd(string url, TransmittedData transmittedData)
+    public BotTextMessage ProcessInputLinkUrlAdd(string url, TransmittedData transmittedData)
     {
         if (!url.StartsWith(SystemStringsStorage.Http) && !url.StartsWith(SystemStringsStorage.Https) ||
             !(url.Length >= Constants.MinUrlLength && url.Length <= Constants.MaxUrlLength))
@@ -78,11 +78,11 @@ public class MenuPointAddServices
         }
         
         transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkUrl, url);
-        transmittedData.State = State.WaitingInputLinkDescriptionForAdd;
+        transmittedData.State = State.InputLinkDescriptionAdd;
         return new BotTextMessage(DialogsStringsStorage.LinkInputUrlSuccess);
     }
 
-    public BotTextMessage ProcessInputLinkDescriptionForAdd(string description, TransmittedData transmittedData)
+    public BotTextMessage ProcessInputLinkDescriptionAdd(string description, TransmittedData transmittedData)
     {
         if (!(description.Length >= Constants.MinDescriptionLength &&
               description.Length <= Constants.MaxDescriptionLength))
@@ -90,7 +90,7 @@ public class MenuPointAddServices
             return new BotTextMessage(DialogsStringsStorage.LinkInputDescriptionError);
         }
 
-        transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForAdd;
+        transmittedData.State = State.ClickLinkCategoryAdd;
         transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkDescription, description);
 
         TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
@@ -108,11 +108,11 @@ public class MenuPointAddServices
 
         return new BotTextMessage(
             DialogsStringsStorage.LinkInputDescriptionSuccess,
-            InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForAdd(linkCategories)
+            InlineKeyboardsMarkupStorage.CreateMenuLinkCategoryAdd(linkCategories)
         );
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonLinkCategoryForAdd(string categoryIdAsString,
+    public BotTextMessage ProcessClickLinkCategoryAdd(string categoryIdAsString,
         TransmittedData transmittedData)
     {
         if (!categoryIdAsString.StartsWith(SystemStringsStorage.LinkCategoryIdText))
@@ -138,19 +138,19 @@ public class MenuPointAddServices
         };
 
         transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLink, link);
-        transmittedData.State = State.WaitingClickOnInlineButtonInMenuApproveAdd;
+        transmittedData.State = State.ClickInMenuApproveAdd;
         return new BotTextMessage(
             DialogsStringsStorage.CreateLinkInputCategory(url, description, categoryName),
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuApproveAdd
+            InlineKeyboardsMarkupStorage.MenuApproveAdd
         );
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuApproveAdd(string callBackData,
+    public BotTextMessage ProcessClickInMenuApproveAdd(string callBackData,
         TransmittedData transmittedData)
     {
         string responseMessageText = SystemStringsStorage.Empty;
 
-        if (callBackData == BotButtonsStorage.ButtonYesInMenuApproveAdd.CallBackData)
+        if (callBackData == BotButtonsStorage.YesInMenuApproveAdd.CallBackData)
         {
             Link link = (Link)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLink);
 
@@ -158,37 +158,37 @@ public class MenuPointAddServices
 
             responseMessageText = DialogsStringsStorage.LinkApproveAddYes;
         }
-        else if (callBackData == BotButtonsStorage.ButtonNoInMenuApproveAdd.CallBackData)
+        else if (callBackData == BotButtonsStorage.NoInMenuApproveAdd.CallBackData)
         {
             responseMessageText = DialogsStringsStorage.LinkApproveAddNo;
         }
 
         
         transmittedData.DataStorage.Clear();
-        transmittedData.State = State.WaitingClickOnInlineButtonInMenuAddAnotherLink;
+        transmittedData.State = State.ClickInMenuAnotherLinkAdd;
         return new BotTextMessage(
             responseMessageText,
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAddAnotherLink
+            InlineKeyboardsMarkupStorage.AnotherLinkAdd
         );
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuAddAnotherLink(string callBackData,
+    public BotTextMessage ProcessClickInMenuAnotherLinkAdd(string callBackData,
         TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonGotoMainMenuInMenuAddAnotherLink.CallBackData)
+        if (callBackData == BotButtonsStorage.GotoMainMenuInMenuAnotherLinkAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
+            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
-        else if (callBackData == BotButtonsStorage.ButtonAddOneInMenuAddAnotherLink.CallBackData)
+        else if (callBackData == BotButtonsStorage.AddOneInMenuAnotherLinkAdd.CallBackData)
         {
-            transmittedData.State = State.WaitingInputLinkUrlForAdd;
+            transmittedData.State = State.InputLinkUrlAdd;
             return new BotTextMessage(DialogsStringsStorage.LinkInputUrl);
         }
 
         throw new Exception("Bad user request");
     }
 
-    public BotTextMessage ProcessInputCategoryForAdd(string categoryName, TransmittedData transmittedData)
+    public BotTextMessage ProcessInputCategoryAdd(string categoryName, TransmittedData transmittedData)
     {
         if (!(categoryName.Length >= Constants.MinCategoryNameLength &&
               categoryName.Length <= Constants.MaxCategoryNameLength))
@@ -204,20 +204,20 @@ public class MenuPointAddServices
 
         DbManager.GetInstance().TableLinksCategories.AddNew(linkCategory);
         
-        transmittedData.State = State.WaitingClickOnInlineButtonInMenuAddAnotherCategory;
+        transmittedData.State = State.ClickInMenuAnotherCategoryAdd;
         return new BotTextMessage(
             DialogsStringsStorage.CategoryNameInputSuccess,
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAddAnotherCategory);
+            InlineKeyboardsMarkupStorage.MenuAnotherCategoryAdd);
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuAddAnotherCategory(string callBackData,
+    public BotTextMessage ProcessClickInMenuAnotherCategoryAdd(string callBackData,
         TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonGotoMainMenuInMenuAddAnotherCategory.CallBackData)
+        if (callBackData == BotButtonsStorage.GotoMainMenuInMenuAnotherCategoryAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
+            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
-        else if (callBackData == BotButtonsStorage.ButtonAddOneInMenuAddAnotherCategory.CallBackData)
+        else if (callBackData == BotButtonsStorage.AddOneInMenuAnotherCategoryAdd.CallBackData)
         {
             return DisplayCategories(transmittedData);
         }
@@ -225,12 +225,12 @@ public class MenuPointAddServices
         throw new Exception("Bad user request");
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuAddCategory(string callBackData,
+    public BotTextMessage ProcessClickInMenuCategoryAdd(string callBackData,
         TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonGotoMainMenuInMenuAddCategory.CallBackData)
+        if (callBackData == BotButtonsStorage.GotoMainMenuInMenuCategoryAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
+            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
 
         throw new Exception("Bad user request");

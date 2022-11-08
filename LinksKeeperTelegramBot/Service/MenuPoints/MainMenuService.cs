@@ -4,13 +4,12 @@ using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Model.Tables;
 using LinksKeeperTelegramBot.Router;
-using LinksKeeperTelegramBot.Service.Services;
 using LinksKeeperTelegramBot.Util;
 using NLog;
 
-namespace LinksKeeperTelegramBot.Service.Handlers;
+namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class MenuMainService
+public class MainMenuService
 {
     private static ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -21,28 +20,28 @@ public class MenuMainService
             return new BotTextMessage(DialogsStringsStorage.CommandStartInputErrorInput);
         }
 
-        return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
+        return SharedServices.GotoProcessClickInMenuMain(transmittedData);
     }
 
-    public BotTextMessage ProcessClickOnInlineButtonInMenuMain(string callBackData, TransmittedData transmittedData)
+    public BotTextMessage ProcessClickInMenuMain(string callBackData, TransmittedData transmittedData)
     {
-        if (callBackData == BotButtonsStorage.ButtonAddInMenuMain.CallBackData)
+        if (callBackData == BotButtonsStorage.AddInMenuMain.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuAdd;
+            transmittedData.State = State.ClickInMenuAdd;
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuAdd,
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuAdd
+                InlineKeyboardsMarkupStorage.MenuAdd
             );
         }
-        else if (callBackData == BotButtonsStorage.ButtonShowInMenuMain.CallBackData)
+        else if (callBackData == BotButtonsStorage.ShowInMenuMain.CallBackData)
         {
             if (DbManager.GetInstance().TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
             {
                 return new BotTextMessage(DialogsStringsStorage.MenuShowNoCategories);
             }
 
-            transmittedData.State = State.WaitingClickOnInlineButtonLinkCategoryForShow;
+            transmittedData.State = State.ClickLinkCategoryShow;
 
             TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
 
@@ -50,16 +49,16 @@ public class MenuMainService
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuShow,
-                InlineKeyboardsMarkupStorage.CreateInlineKeyboardMarkupMenuLinkCategoryForShow(linkCategories)
+                InlineKeyboardsMarkupStorage.CreateMenuLinkCategoryShow(linkCategories)
             );
         }
-        else if (callBackData == BotButtonsStorage.ButtonDeleteInMenuMain.CallBackData)
+        else if (callBackData == BotButtonsStorage.DeleteInMenuMain.CallBackData)
         {
-            transmittedData.State = State.WaitingClickOnInlineButtonInMenuDelete;
+            transmittedData.State = State.ClickInMenuDelete;
 
             return new BotTextMessage(
                 DialogsStringsStorage.MenuDelete,
-                InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuDelete
+                InlineKeyboardsMarkupStorage.MenuDelete
             );
         }
         throw new Exception("Bad user request");

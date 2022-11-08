@@ -8,18 +8,18 @@ using NLog;
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace LinksKeeperTelegramBot.Service.Services;
+namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
 public class SharedServices
 {
-    public static BotTextMessage GotoProcessClickOnInlineButtonInMenuMain(TransmittedData transmittedData)
+    public static BotTextMessage GotoProcessClickInMenuMain(TransmittedData transmittedData)
     {
-        transmittedData.State = State.WaitingClickOnInlineButtonInMenuMain;
+        transmittedData.State = State.ClickInMenuMain;
         transmittedData.DataStorage.Clear();
         
         return new BotTextMessage(
             DialogsStringsStorage.MenuMain,
-            InlineKeyboardsMarkupStorage.InlineKeyboardMarkupMenuMain
+            InlineKeyboardsMarkupStorage.MenuMain
         );
     }
 }

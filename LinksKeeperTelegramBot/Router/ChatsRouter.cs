@@ -1,6 +1,6 @@
 using LinksKeeperTelegramBot.BotSettings;
 using LinksKeeperTelegramBot.Service;
-using LinksKeeperTelegramBot.Service.Services;
+using LinksKeeperTelegramBot.Service.MenuPoints;
 using LinksKeeperTelegramBot.Util;
 using NLog;
 
@@ -29,9 +29,9 @@ public class ChatsRouter
         TransmittedData transmittedData = _chatTransmittedDataPairs[chatId];
 
         //process reset command
-        if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
+        if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.CommandStart)
         {
-            return SharedServices.GotoProcessClickOnInlineButtonInMenuMain(transmittedData);
+            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
         
         return _servicesManager.ProcessBotUpdate(textData, transmittedData);
