@@ -11,7 +11,7 @@ public class TransmittedData
     public TransmittedData(long chatId)
     {
         ChatId = chatId;
-        State = State.WaitingCommandStart;
+        State = State.CommandStart;
         DataStorage = new DataStorage();
     }
 }

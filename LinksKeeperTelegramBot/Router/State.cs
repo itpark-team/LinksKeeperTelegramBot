@@ -2,25 +2,24 @@ namespace LinksKeeperTelegramBot.Router;
 
 public enum State
 {
-    WaitingCommandStart,
-    WaitingClickOnInlineButtonInMenuMain,
-    WaitingClickOnInlineButtonInMenuAdd,
-    WaitingInputLinkUrlForAdd,
-    WaitingInputLinkDescriptionForAdd,
-    WaitingClickOnInlineButtonLinkCategoryForAdd,
-    WaitingClickOnInlineButtonInMenuApproveAdd,
-    WaitingClickOnInlineButtonInMenuAddAnotherLink,
+    CommandStart,
+    ClickInMenuMain,
     
-    WaitingClickOnInlineButtonLinkCategoryForShow,
-    WaitingClickOnInlineButtonLinkCategoryShowLinks,
+    ClickInMenuAdd,
+    InputLinkUrlAdd,
+    InputLinkDescriptionAdd,
+    ClickLinkCategoryAdd,
+    ClickInMenuApproveAdd,
+    ClickInMenuAnotherLinkAdd,
+    InputCategoryAdd,
+    ClickInMenuAnotherCategoryAdd,
+    ClickInMenuCategoryAdd,
     
-    WaitingInputCategoryForAdd,
-    WaitingClickOnInlineButtonInMenuAddAnotherCategory,
-    WaitingClickOnInlineButtonInMenuAddCategory,
+    ClickLinkCategoryShow,
+    ClickLinkCategoryLinksShow,
     
-    WaitingClickOnInlineButtonInMenuDelete,
-    WaitingClickOnInlineButtonMenuDeleteCategory,
-    
-    WaitingClickOnInlineButtonLinkCategoryForDeleteLinks,
-    WaitingClickOnInlineButtonDeleteChosenLink
+    ClickInMenuDelete,
+    ClickMenuCategoryDelete,
+    ClickLinkCategoryLinksDelete,
+    ClickChosenLinkDelete
 }

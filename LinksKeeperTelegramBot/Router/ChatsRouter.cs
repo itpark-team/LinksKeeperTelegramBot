@@ -1,17 +1,15 @@
-using LinksKeeperTelegramBot.BotSettings;
+using LinksKeeperTelegramBot.BotInitializer;
 using LinksKeeperTelegramBot.Service;
-using LinksKeeperTelegramBot.Service.Handlers;
+using LinksKeeperTelegramBot.Service.MenuPoints;
 using LinksKeeperTelegramBot.Util;
 using NLog;
-using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace LinksKeeperTelegramBot.Router;
 
 public class ChatsRouter
 {
     private static ILogger Logger = LogManager.GetCurrentClassLogger();
-
+    
     private Dictionary<long, TransmittedData> _chatTransmittedDataPairs;
     private ServicesManager _servicesManager;
 
@@ -29,11 +27,12 @@ public class ChatsRouter
         }
 
         TransmittedData transmittedData = _chatTransmittedDataPairs[chatId];
+        
+        Logger.Info($"ROUTER chatId = {chatId}; State = {transmittedData.State}");
 
-        //process reset command
-        if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.WaitingCommandStart)
+        if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.CommandStart)
         {
-            return GlobalService.ProcessCommandReset(transmittedData);
+            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
         
         return _servicesManager.ProcessBotUpdate(textData, transmittedData);
