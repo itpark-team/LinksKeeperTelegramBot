@@ -1,5 +1,5 @@
 using System.Text;
-using LinksKeeperTelegramBot.BotSettings;
+using LinksKeeperTelegramBot.BotInitializer;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Model.Tables;

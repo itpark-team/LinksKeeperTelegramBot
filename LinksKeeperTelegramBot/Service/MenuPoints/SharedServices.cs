@@ -1,12 +1,7 @@
-using LinksKeeperTelegramBot.BotSettings;
-using LinksKeeperTelegramBot.Model;
-using LinksKeeperTelegramBot.Model.Entities;
-using LinksKeeperTelegramBot.Model.Tables;
+using LinksKeeperTelegramBot.BotInitializer;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
-using NLog;
-using Telegram.Bot;
-using Telegram.Bot.Types.ReplyMarkups;
+
 
 namespace LinksKeeperTelegramBot.Service.MenuPoints;
 

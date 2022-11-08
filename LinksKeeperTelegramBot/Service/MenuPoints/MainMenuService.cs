@@ -1,5 +1,5 @@
 using System.Text;
-using LinksKeeperTelegramBot.BotSettings;
+using LinksKeeperTelegramBot.BotInitializer;
 using LinksKeeperTelegramBot.Model;
 using LinksKeeperTelegramBot.Model.Entities;
 using LinksKeeperTelegramBot.Model.Tables;
@@ -11,7 +11,6 @@ namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
 public class MainMenuService
 {
-    private static ILogger Logger = LogManager.GetCurrentClassLogger();
 
     private DbManager _dbManager;
 

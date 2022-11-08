@@ -1,4 +1,4 @@
-﻿using LinksKeeperTelegramBot.BotSettings;
+﻿using LinksKeeperTelegramBot.BotInitializer;
 
 Bot bot = new Bot();
 bot.Start();

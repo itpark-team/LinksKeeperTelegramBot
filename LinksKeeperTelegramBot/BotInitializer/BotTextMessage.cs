@@ -1,7 +1,7 @@
 using LinksKeeperTelegramBot.Util;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace LinksKeeperTelegramBot.BotSettings;
+namespace LinksKeeperTelegramBot.BotInitializer;
 
 public class BotTextMessage
 {

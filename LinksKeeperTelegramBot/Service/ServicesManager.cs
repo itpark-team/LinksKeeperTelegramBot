@@ -1,4 +1,4 @@
-using LinksKeeperTelegramBot.BotSettings;
+using LinksKeeperTelegramBot.BotInitializer;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Service.MenuPoints;
 using NLog;
@@ -9,8 +9,6 @@ namespace LinksKeeperTelegramBot.Service;
 
 public class ServicesManager
 {
-    private static ILogger Logger = LogManager.GetCurrentClassLogger();
-
     private Dictionary<State, Func<string, TransmittedData, BotTextMessage>>
         _methods;
 

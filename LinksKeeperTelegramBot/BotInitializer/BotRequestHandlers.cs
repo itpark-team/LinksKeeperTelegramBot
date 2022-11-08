@@ -6,7 +6,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace LinksKeeperTelegramBot.BotSettings;
+namespace LinksKeeperTelegramBot.BotInitializer;
 
 public class BotRequestHandlers
 {
@@ -15,16 +15,12 @@ public class BotRequestHandlers
 
     public BotRequestHandlers()
     {
-        Logger.Info("Старт инициализации ChatsRouter");
         _chatsRouter = new ChatsRouter();
-        Logger.Info("Выволнена инициализация ChatsRouter");
     }
 
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
-        Logger.Info("Старт обработки входящего сообщения от клиента в методе HandleUpdateAsync");
-
         long chatId = 0;
         int messageId = 0;
         string textData = SystemStringsStorage.Empty;
@@ -40,7 +36,7 @@ public class BotRequestHandlers
                     chatId = update.Message.Chat.Id;
                     messageId = update.Message.MessageId;
                     textData = update.Message.Text;
-                    Logger.Debug($"Тип входящего сообщения от chatId = {chatId} - UpdateType.Message");
+                    
                 }
 
                 break;
@@ -52,11 +48,12 @@ public class BotRequestHandlers
                     chatId = update.CallbackQuery.Message.Chat.Id;
                     messageId = update.CallbackQuery.Message.MessageId;
                     textData = update.CallbackQuery.Data;
-                    Logger.Debug($"Тип входящего сообщения chatId = {chatId} - UpdateType.CallbackQuery");
                 }
 
                 break;
         }
+        
+        Logger.Info($"ВХОДЯЩЕЕ СОООБЩЕНИЕ UpdateType = {update.Type}; chatId = {chatId}; messageId = {messageId}; text = {textData} canRoute = {canRoute}");
 
         if (canRoute)
         {
@@ -65,6 +62,8 @@ public class BotRequestHandlers
                 BotTextMessage botTextMessage =
                     await Task.Run(() => _chatsRouter.Route(chatId, textData), cancellationToken);
 
+                Logger.Info($"ИСХОДЯЩЕЕ СОООБЩЕНИЕ chatId = {chatId}; text = {botTextMessage.Text.Replace("\n"," ")}; Keyboard = ???");
+                
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: botTextMessage.Text,
@@ -73,14 +72,13 @@ public class BotRequestHandlers
             }
             catch (Exception e)
             {
+                Logger.Error($"ОШИБКА chatId = {chatId}; text = {e.Message}");
                 await botClient.DeleteMessageAsync(
                     chatId: chatId,
                     messageId: messageId,
                     cancellationToken: cancellationToken);
             }
         }
-
-        Logger.Info($"Выполенна обработка входящего сообщения от chatId = {chatId} в методе HandleUpdateAsync");
     }
 
     public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,
