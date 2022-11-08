@@ -68,6 +68,6 @@ public class MainMenuService
                 InlineKeyboardsMarkupStorage.MenuDelete
             );
         }
-        throw new Exception("Bad user request");
+        throw new Exception("CallBackData не распознана");
     }
 }

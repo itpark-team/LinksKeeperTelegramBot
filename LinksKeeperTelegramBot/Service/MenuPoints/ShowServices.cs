@@ -71,7 +71,7 @@ public class ShowServices
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))
         {
-            throw new Exception("Bad user request");
+            throw new Exception("LinkCategoryId не распознан");
         }
         
         callBackData = callBackData.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
@@ -116,6 +116,6 @@ public class ShowServices
             return LinksToText(transmittedData, links);
         }
 
-        throw new Exception("Bad user request");
+        throw new Exception("CallBackData не распознана");
     }
 }

@@ -75,7 +75,7 @@ public class AddServices
             return SharedServices.GotoProcessClickInMenuMain(transmittedData);
         }
 
-        throw new Exception("Bad user request");
+        throw new Exception("CallBackData не распознана");
     }
 
     public BotTextMessage ProcessInputLinkUrlAdd(string url, TransmittedData transmittedData)
@@ -126,7 +126,7 @@ public class AddServices
     {
         if (!categoryIdAsString.StartsWith(SystemStringsStorage.LinkCategoryIdText))
         {
-            throw new Exception("Bad user request");
+            throw new Exception("LinkCategoryId не распознан");
         }
 
         categoryIdAsString = categoryIdAsString.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
