@@ -11,14 +11,20 @@ namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
 public class ShowServices
 {
+    private DbManager _dbManager;
+
+    public ShowServices()
+    {
+        _dbManager = DbManager.GetInstance();
+    }
+
     #region CommonMethods
 
-    private void LinksToText(TransmittedData transmittedData, IEnumerable<Link> links, out string linksAsText,
-        out bool hasMessageFit)
+    private BotTextMessage LinksToText(TransmittedData transmittedData, IEnumerable<Link> links)
     {
         StringBuilder stringBuilder = new StringBuilder();
 
-        hasMessageFit = true;
+        bool hasMessageFit = true;
 
         foreach (Link link in links)
         {
@@ -41,7 +47,16 @@ public class ShowServices
             stringBuilder.AppendLine(SystemStringsStorage.Devider);
         }
 
-        linksAsText = stringBuilder.ToString();
+        string linksAsText = stringBuilder.ToString();
+        
+        InlineKeyboardMarkup inlineKeyboardMarkup = hasMessageFit
+            ? InlineKeyboardsMarkupStorage.LinksAllShow
+            : InlineKeyboardsMarkupStorage.LinksMoreShow;
+        
+        return new BotTextMessage(
+            linksAsText,
+            inlineKeyboardMarkup
+        );
     }
 
     #endregion
@@ -63,19 +78,10 @@ public class ShowServices
 
         int categoryId = int.Parse(callBackData);
 
-        IEnumerable<Link> links = DbManager.GetInstance().TableLinks.GetAllByCategoryId(categoryId);
-
-        LinksToText(transmittedData, links, out string linksAsText, out bool hasMessageFit);
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = hasMessageFit
-            ? InlineKeyboardsMarkupStorage.LinksAllShow
-            : InlineKeyboardsMarkupStorage.LinksMoreShow;
+        IEnumerable<Link> links = _dbManager.TableLinks.GetAllByCategoryId(categoryId);
 
         transmittedData.State = State.ClickLinkCategoryLinksShow;
-        return new BotTextMessage(
-            linksAsText,
-            inlineKeyboardMarkup
-        );
+        return LinksToText(transmittedData, links);
     }
 
     public BotTextMessage ProcessClickLinkCategoryLinksShow(string callBackData,
@@ -88,7 +94,7 @@ public class ShowServices
 
             transmittedData.State = State.ClickLinkCategoryShow;
 
-            TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
@@ -104,19 +110,10 @@ public class ShowServices
             int startLinkId =
                 (int)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyShowLinksStartLinkId);
 
-            IEnumerable<Link> links = DbManager.GetInstance().TableLinks
+            IEnumerable<Link> links = _dbManager.TableLinks
                 .GetAllByCategoryIdWithStartLinkId(categoryId, startLinkId);
 
-            LinksToText(transmittedData, links, out string linksAsText, out bool hasMessageFit);
-          
-            InlineKeyboardMarkup inlineKeyboardMarkup = hasMessageFit
-                ? InlineKeyboardsMarkupStorage.LinksAllShow
-                : InlineKeyboardsMarkupStorage.LinksMoreShow;
-
-            return new BotTextMessage(
-                linksAsText,
-                inlineKeyboardMarkup
-            );
+            return LinksToText(transmittedData, links);
         }
 
         throw new Exception("Bad user request");

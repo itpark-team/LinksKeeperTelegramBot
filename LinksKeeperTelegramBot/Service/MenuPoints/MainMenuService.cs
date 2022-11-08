@@ -13,6 +13,14 @@ public class MainMenuService
 {
     private static ILogger Logger = LogManager.GetCurrentClassLogger();
 
+    private DbManager _dbManager;
+
+    public MainMenuService()
+    {
+        _dbManager = DbManager.GetInstance();
+    }
+
+
     public BotTextMessage ProcessCommandStart(string command, TransmittedData transmittedData)
     {
         if (command != SystemStringsStorage.CommandStart)
@@ -36,14 +44,14 @@ public class MainMenuService
         }
         else if (callBackData == BotButtonsStorage.ShowInMenuMain.CallBackData)
         {
-            if (DbManager.GetInstance().TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
+            if (_dbManager.TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
             {
                 return new BotTextMessage(DialogsStringsStorage.MenuShowNoCategories);
             }
 
             transmittedData.State = State.ClickLinkCategoryShow;
 
-            TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 

@@ -10,11 +10,19 @@ namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
 public class AddServices
 {
+    private DbManager _dbManager;
+
+    public AddServices()
+    {
+        _dbManager = DbManager.GetInstance();
+    }
+
     #region CommonMethods
+
     private BotTextMessage DisplayCategories(TransmittedData transmittedData)
     {
         IEnumerable<LinkCategory> linkCategories =
-            DbManager.GetInstance().TableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+            _dbManager.TableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
         string replyText = DialogsStringsStorage.MenuCategoryStart;
 
@@ -47,6 +55,7 @@ public class AddServices
             );
         }
     }
+
     #endregion
 
     public BotTextMessage ProcessClickInMenuAdd(string callBackData,
@@ -76,7 +85,7 @@ public class AddServices
         {
             return new BotTextMessage(DialogsStringsStorage.LinkInputUrlError);
         }
-        
+
         transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkUrl, url);
         transmittedData.State = State.InputLinkDescriptionAdd;
         return new BotTextMessage(DialogsStringsStorage.LinkInputUrlSuccess);
@@ -93,7 +102,7 @@ public class AddServices
         transmittedData.State = State.ClickLinkCategoryAdd;
         transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkDescription, description);
 
-        TableLinksCategories tableLinksCategories = DbManager.GetInstance().TableLinksCategories;
+        TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
         if (tableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
         {
@@ -123,11 +132,11 @@ public class AddServices
         categoryIdAsString = categoryIdAsString.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
 
         int categoryId = int.Parse(categoryIdAsString);
-        
+
         string url = (string)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkUrl);
         string description =
             (string)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLinkDescription);
-        string categoryName = DbManager.GetInstance().TableLinksCategories.GetById(categoryId).Name;
+        string categoryName = _dbManager.TableLinksCategories.GetById(categoryId).Name;
 
         Link link = new Link()
         {
@@ -154,7 +163,7 @@ public class AddServices
         {
             Link link = (Link)transmittedData.DataStorage.Get(SystemStringsStorage.DataStorageKeyLink);
 
-            DbManager.GetInstance().TableLinks.AddNew(link);
+            _dbManager.TableLinks.AddNew(link);
 
             responseMessageText = DialogsStringsStorage.LinkApproveAddYes;
         }
@@ -163,7 +172,7 @@ public class AddServices
             responseMessageText = DialogsStringsStorage.LinkApproveAddNo;
         }
 
-        
+
         transmittedData.DataStorage.Clear();
         transmittedData.State = State.ClickInMenuAnotherLinkAdd;
         return new BotTextMessage(
@@ -202,8 +211,8 @@ public class AddServices
             ChatId = transmittedData.ChatId
         };
 
-        DbManager.GetInstance().TableLinksCategories.AddNew(linkCategory);
-        
+        _dbManager.TableLinksCategories.AddNew(linkCategory);
+
         transmittedData.State = State.ClickInMenuAnotherCategoryAdd;
         return new BotTextMessage(
             DialogsStringsStorage.CategoryNameInputSuccess,

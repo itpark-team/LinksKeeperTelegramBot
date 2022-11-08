@@ -86,7 +86,7 @@ public class ServicesManager
             _deleteServices.ProcessClickMenuCategoryDelete;
         
         _methods[State.ClickLinkCategoryLinksDelete] =
-            _deleteServices.ProcessClickClickLinkCategoryLinksDelete;
+            _deleteServices.ProcessClickLinkCategoryLinksDelete;
         
         _methods[State.ClickChosenLinkDelete] =
             _deleteServices.ProcessClickChosenLinkDelete;
