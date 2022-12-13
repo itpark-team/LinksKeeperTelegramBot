@@ -29,4 +29,14 @@ public class SystemStringsStorage
     public const string DataStorageKeyLinkCategoryIdForDelete = "DataStorageKeyLinkCategoryIdForDelete";
     public const string DataStorageKeyShowLinksStartLinkIdForDelete = "DataStorageKeyShowLinksStartLinkIdForDelete";
     
+    public const string DbHost = "194.67.105.79";
+    public const string DbUsername = "links_keeper_user";
+    public const string DbPassword = "12345";
+    public const string DbDatabasename = "links_keeper_db";
+    
+    public const string DbHostTest = "194.67.105.79";
+    public const string DbUsernameTest = "links_keeper_user_test";
+    public const string DbPasswordTest = "12345";
+    public const string DbDatabasenameTest = "links_keeper_db_test";
+    
 }

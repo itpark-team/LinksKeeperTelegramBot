@@ -9,13 +9,13 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class ShowServices
+public class ShowService
 {
     private DbManager _dbManager;
 
-    public ShowServices()
+    public ShowService(DbManager dbManager)
     {
-        _dbManager = DbManager.GetInstance();
+        _dbManager = dbManager;
     }
 
     #region CommonMethods
@@ -66,7 +66,7 @@ public class ShowServices
     {
         if (callBackData == BotButtonsStorage.BackwardInMenuShow.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))
@@ -94,7 +94,7 @@ public class ShowServices
 
             transmittedData.State = State.ClickLinkCategoryShow;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 

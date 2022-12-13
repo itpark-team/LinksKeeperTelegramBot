@@ -28,4 +28,6 @@ public class DataStorage
     {
         return _data[key];
     }
+
+    public int Count => _data.Count;
 }

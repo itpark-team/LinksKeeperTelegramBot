@@ -32,7 +32,7 @@ public class ChatsRouter
 
         if (textData == SystemStringsStorage.CommandReset && transmittedData.State != State.CommandStart)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
         
         return _servicesManager.ProcessBotUpdate(textData, transmittedData);

@@ -11,12 +11,11 @@ namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
 public class MainMenuService
 {
-
     private DbManager _dbManager;
 
-    public MainMenuService()
+    public MainMenuService(DbManager dbManager)
     {
-        _dbManager = DbManager.GetInstance();
+        _dbManager = dbManager;
     }
 
 
@@ -27,7 +26,7 @@ public class MainMenuService
             return new BotTextMessage(DialogsStringsStorage.CommandStartInputErrorInput);
         }
 
-        return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+        return SharedService.GotoProcessClickInMenuMain(transmittedData);
     }
 
     public BotTextMessage ProcessClickInMenuMain(string callBackData, TransmittedData transmittedData)
@@ -43,15 +42,15 @@ public class MainMenuService
         }
         else if (callBackData == BotButtonsStorage.ShowInMenuMain.CallBackData)
         {
-            if (_dbManager.TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            
+            if (tableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
             {
                 return new BotTextMessage(DialogsStringsStorage.MenuShowNoCategories);
             }
 
             transmittedData.State = State.ClickLinkCategoryShow;
-
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
-
+            
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
             return new BotTextMessage(

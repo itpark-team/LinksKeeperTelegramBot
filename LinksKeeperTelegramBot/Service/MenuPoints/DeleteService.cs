@@ -9,13 +9,13 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class DeleteServices
+public class DeleteService
 {
     private DbManager _dbManager;
 
-    public DeleteServices()
+    public DeleteService(DbManager dbManager)
     {
-        _dbManager = DbManager.GetInstance();
+        _dbManager = dbManager;
     }
 
     #region CommonMethods
@@ -78,7 +78,7 @@ public class DeleteServices
 
             transmittedData.State = State.ClickLinkCategoryLinksDelete;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
@@ -96,7 +96,7 @@ public class DeleteServices
 
             transmittedData.State = State.ClickMenuCategoryDelete;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
@@ -107,7 +107,7 @@ public class DeleteServices
         }
         else if (callBackData == BotButtonsStorage.BackwardInMenuDelete.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
         throw new Exception("Bad user request");
@@ -135,7 +135,7 @@ public class DeleteServices
 
         int categoryId = int.Parse(callBackData);
 
-        TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+        ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
         if (tableLinksCategories.GetAllByChatId(transmittedData.ChatId).Count() == Constants.MinLinksCategoriesCount)
         {
@@ -196,7 +196,7 @@ public class DeleteServices
         {
             transmittedData.State = State.ClickLinkCategoryLinksDelete;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
