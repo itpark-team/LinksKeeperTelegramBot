@@ -3,7 +3,7 @@ using Npgsql;
 
 namespace LinksKeeperTelegramBot.Model.Tables;
 
-public class TableLinks
+public class TableLinks : ITableLinks
 {
     private NpgsqlConnection _connection;
 
@@ -86,7 +86,7 @@ public class TableLinks
 
         return links;
     }
-    
+
     public void DeleteById(int id)
     {
         string sqlRequest = $"DELETE FROM links WHERE id={id}";

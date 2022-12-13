@@ -13,9 +13,9 @@ public class ShowServices
 {
     private DbManager _dbManager;
 
-    public ShowServices()
+    public ShowServices(DbManager dbManager)
     {
-        _dbManager = DbManager.GetInstance();
+        _dbManager = dbManager;
     }
 
     #region CommonMethods
@@ -94,7 +94,7 @@ public class ShowServices
 
             transmittedData.State = State.ClickLinkCategoryShow;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 

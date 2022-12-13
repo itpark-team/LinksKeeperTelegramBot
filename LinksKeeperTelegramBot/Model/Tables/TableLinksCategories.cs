@@ -3,7 +3,7 @@ using Npgsql;
 
 namespace LinksKeeperTelegramBot.Model.Tables;
 
-public class TableLinksCategories
+public class TableLinksCategories : ITableLinksCategories
 {
     private NpgsqlConnection _connection;
 

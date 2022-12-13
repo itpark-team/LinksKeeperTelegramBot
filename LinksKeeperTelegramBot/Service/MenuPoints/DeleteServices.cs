@@ -13,9 +13,9 @@ public class DeleteServices
 {
     private DbManager _dbManager;
 
-    public DeleteServices()
+    public DeleteServices(DbManager dbManager)
     {
-        _dbManager = DbManager.GetInstance();
+        _dbManager = dbManager;
     }
 
     #region CommonMethods
@@ -78,7 +78,7 @@ public class DeleteServices
 
             transmittedData.State = State.ClickLinkCategoryLinksDelete;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
@@ -96,7 +96,7 @@ public class DeleteServices
 
             transmittedData.State = State.ClickMenuCategoryDelete;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 
@@ -135,7 +135,7 @@ public class DeleteServices
 
         int categoryId = int.Parse(callBackData);
 
-        TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+        ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
         if (tableLinksCategories.GetAllByChatId(transmittedData.ChatId).Count() == Constants.MinLinksCategoriesCount)
         {
@@ -196,7 +196,7 @@ public class DeleteServices
         {
             transmittedData.State = State.ClickLinkCategoryLinksDelete;
 
-            TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
             IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
 

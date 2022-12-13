@@ -12,9 +12,9 @@ public class AddServices
 {
     private DbManager _dbManager;
 
-    public AddServices()
+    public AddServices(DbManager dbManager)
     {
-        _dbManager = DbManager.GetInstance();
+        _dbManager = dbManager;
     }
 
     #region CommonMethods
@@ -102,7 +102,7 @@ public class AddServices
         transmittedData.State = State.ClickLinkCategoryAdd;
         transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkDescription, description);
 
-        TableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+        ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
 
         if (tableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
         {

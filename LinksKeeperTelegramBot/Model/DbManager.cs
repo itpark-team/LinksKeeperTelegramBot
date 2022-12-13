@@ -6,26 +6,12 @@ namespace LinksKeeperTelegramBot.Model;
 
 public class DbManager
 {
-    public TableLinks TableLinks { get; private set; }
-    public TableLinksCategories TableLinksCategories { get; private set; }
+    public ITableLinks TableLinks { get; private set; }
+    public ITableLinksCategories TableLinksCategories { get; private set; }
 
-    public DbManager()
+    public DbManager(ITableLinks tableLinks, ITableLinksCategories tableLinksCategories)
     {
-        NpgsqlConnection connection = DbConnector.GetInstance().Connection;
-
-        TableLinks = new TableLinks(connection);
-        TableLinksCategories = new TableLinksCategories(connection);
-    }
-
-    private static DbManager _dbManager = null;
-
-    public static DbManager GetInstance()
-    {
-        if (_dbManager == null)
-        {
-            _dbManager = new DbManager();
-        }
-
-        return _dbManager;
+        TableLinks = tableLinks;
+        TableLinksCategories = tableLinksCategories;
     }
 }
