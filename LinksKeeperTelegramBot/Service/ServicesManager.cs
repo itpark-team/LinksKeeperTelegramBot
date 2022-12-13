@@ -17,9 +17,9 @@ public class ServicesManager
         _methods;
 
     private MainMenuService _mainMenuService;
-    private AddServices _addServices;
-    private ShowServices _showServices;
-    private DeleteServices _deleteServices;
+    private AddService _addService;
+    private ShowService _showService;
+    private DeleteService _deleteService;
     
     public ServicesManager()
     {
@@ -35,9 +35,9 @@ public class ServicesManager
         DbManager dbManager = new DbManager(tableLinks, tableLinksCategories);
 
         _mainMenuService = new MainMenuService(dbManager);
-        _addServices = new AddServices(dbManager);
-        _showServices = new ShowServices(dbManager);
-        _deleteServices = new DeleteServices(dbManager);
+        _addService = new AddService(dbManager);
+        _showService = new ShowService(dbManager);
+        _deleteService = new DeleteService(dbManager);
 
         _methods =
             new Dictionary<State, Func<string, TransmittedData, BotTextMessage>>();
@@ -54,57 +54,57 @@ public class ServicesManager
         #region MenuPointAddServices
 
         _methods[State.ClickInMenuAdd] =
-            _addServices.ProcessClickInMenuAdd;
+            _addService.ProcessClickInMenuAdd;
 
-        _methods[State.InputLinkUrlAdd] = _addServices.ProcessInputLinkUrlAdd;
+        _methods[State.InputLinkUrlAdd] = _addService.ProcessInputLinkUrlAdd;
 
         _methods[State.InputLinkDescriptionAdd] =
-            _addServices.ProcessInputLinkDescriptionAdd;
+            _addService.ProcessInputLinkDescriptionAdd;
 
         _methods[State.ClickLinkCategoryAdd] =
-            _addServices.ProcessClickLinkCategoryAdd;
+            _addService.ProcessClickLinkCategoryAdd;
 
         _methods[State.ClickInMenuApproveAdd] =
-            _addServices.ProcessClickInMenuApproveAdd;
+            _addService.ProcessClickInMenuApproveAdd;
 
         _methods[State.ClickInMenuAnotherLinkAdd] =
-            _addServices.ProcessClickInMenuAnotherLinkAdd;
+            _addService.ProcessClickInMenuAnotherLinkAdd;
 
         _methods[State.InputCategoryAdd] =
-            _addServices.ProcessInputCategoryAdd;
+            _addService.ProcessInputCategoryAdd;
 
         _methods[State.ClickInMenuAnotherCategoryAdd] =
-            _addServices.ProcessClickInMenuAnotherCategoryAdd;
+            _addService.ProcessClickInMenuAnotherCategoryAdd;
 
         _methods[State.ClickInMenuCategoryAdd] =
-            _addServices.ProcessClickInMenuCategoryAdd;
+            _addService.ProcessClickInMenuCategoryAdd;
 
         #endregion
 
         #region MenuPointShowServices
 
         _methods[State.ClickLinkCategoryShow] =
-            _showServices.ProcessClickLinkCategoryShow;
+            _showService.ProcessClickLinkCategoryShow;
 
         _methods[State.ClickLinkCategoryLinksShow] =
-            _showServices.ProcessClickLinkCategoryLinksShow;
+            _showService.ProcessClickLinkCategoryLinksShow;
 
         #endregion
 
         #region MenuPointDeleteServices
 
         _methods[State.ClickInMenuDelete] =
-            _deleteServices.ProcessClickInMenuDelete;
+            _deleteService.ProcessClickInMenuDelete;
 
 
         _methods[State.ClickMenuCategoryDelete] =
-            _deleteServices.ProcessClickMenuCategoryDelete;
+            _deleteService.ProcessClickMenuCategoryDelete;
 
         _methods[State.ClickLinkCategoryLinksDelete] =
-            _deleteServices.ProcessClickLinkCategoryLinksDelete;
+            _deleteService.ProcessClickLinkCategoryLinksDelete;
 
         _methods[State.ClickChosenLinkDelete] =
-            _deleteServices.ProcessClickChosenLinkDelete;
+            _deleteService.ProcessClickChosenLinkDelete;
 
         #endregion
     }

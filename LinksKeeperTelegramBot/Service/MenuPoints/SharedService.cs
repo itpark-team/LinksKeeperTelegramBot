@@ -5,7 +5,7 @@ using LinksKeeperTelegramBot.Util;
 
 namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class SharedServices
+public class SharedService
 {
     public static BotTextMessage GotoProcessClickInMenuMain(TransmittedData transmittedData)
     {

@@ -9,11 +9,11 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class DeleteServices
+public class DeleteService
 {
     private DbManager _dbManager;
 
-    public DeleteServices(DbManager dbManager)
+    public DeleteService(DbManager dbManager)
     {
         _dbManager = dbManager;
     }
@@ -107,7 +107,7 @@ public class DeleteServices
         }
         else if (callBackData == BotButtonsStorage.BackwardInMenuDelete.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
         throw new Exception("Bad user request");

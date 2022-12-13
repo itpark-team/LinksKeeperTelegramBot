@@ -9,11 +9,11 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class ShowServices
+public class ShowService
 {
     private DbManager _dbManager;
 
-    public ShowServices(DbManager dbManager)
+    public ShowService(DbManager dbManager)
     {
         _dbManager = dbManager;
     }
@@ -66,7 +66,7 @@ public class ShowServices
     {
         if (callBackData == BotButtonsStorage.BackwardInMenuShow.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))

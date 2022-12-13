@@ -26,7 +26,7 @@ public class MainMenuService
             return new BotTextMessage(DialogsStringsStorage.CommandStartInputErrorInput);
         }
 
-        return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+        return SharedService.GotoProcessClickInMenuMain(transmittedData);
     }
 
     public BotTextMessage ProcessClickInMenuMain(string callBackData, TransmittedData transmittedData)

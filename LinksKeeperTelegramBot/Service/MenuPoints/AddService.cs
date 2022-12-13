@@ -8,11 +8,11 @@ using LinksKeeperTelegramBot.Util;
 
 namespace LinksKeeperTelegramBot.Service.MenuPoints;
 
-public class AddServices
+public class AddService
 {
     private DbManager _dbManager;
 
-    public AddServices(DbManager dbManager)
+    public AddService(DbManager dbManager)
     {
         _dbManager = dbManager;
     }
@@ -72,7 +72,7 @@ public class AddServices
         }
         else if (callBackData == BotButtonsStorage.BackwardInMenuAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
         throw new Exception("CallBackData не распознана");
@@ -186,7 +186,7 @@ public class AddServices
     {
         if (callBackData == BotButtonsStorage.GotoMainMenuInMenuAnotherLinkAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
         else if (callBackData == BotButtonsStorage.AddOneInMenuAnotherLinkAdd.CallBackData)
         {
@@ -224,7 +224,7 @@ public class AddServices
     {
         if (callBackData == BotButtonsStorage.GotoMainMenuInMenuAnotherCategoryAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
         else if (callBackData == BotButtonsStorage.AddOneInMenuAnotherCategoryAdd.CallBackData)
         {
@@ -239,7 +239,7 @@ public class AddServices
     {
         if (callBackData == BotButtonsStorage.GotoMainMenuInMenuCategoryAdd.CallBackData)
         {
-            return SharedServices.GotoProcessClickInMenuMain(transmittedData);
+            return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
         throw new Exception("Bad user request");
