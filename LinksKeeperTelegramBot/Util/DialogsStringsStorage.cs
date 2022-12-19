@@ -32,6 +32,7 @@ public class DialogsStringsStorage
     
     public const string MenuShow = "Выберите, категорию, ссылки в которой вы хотите просмотреть";
     public const string MenuShowNoCategories = "У вас нет ещё ни одной добавленной ссылки, пожалуйста вначале добавьте ссылку";
+    public const string MenuShowNoLinksInCategory = "У вас нет ещё ни одной добавленной ссылки в данной категории, пожалуйста вначале добавьте ссылку";
     
     public const string CategoryNameInputError =
         "Ошибка ввода категории. Пожалуйста введите корректное название от 1 до 64 символов";

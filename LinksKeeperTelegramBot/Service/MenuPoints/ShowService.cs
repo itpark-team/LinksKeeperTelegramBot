@@ -80,8 +80,18 @@ public class ShowService
 
         IEnumerable<Link> links = _dbManager.TableLinks.GetAllByCategoryId(categoryId);
 
-        transmittedData.State = State.ClickLinkCategoryLinksShow;
-        return LinksToText(transmittedData, links);
+        if (links.Count() != 0)
+        {
+            transmittedData.State = State.ClickLinkCategoryLinksShow;
+            return LinksToText(transmittedData, links);
+        }
+        else
+        {
+            
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuShowNoLinksInCategory
+            );
+        }
     }
 
     public BotTextMessage ProcessClickLinkCategoryLinksShow(string callBackData,
