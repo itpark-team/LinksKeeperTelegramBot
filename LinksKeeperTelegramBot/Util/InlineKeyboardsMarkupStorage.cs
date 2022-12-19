@@ -94,6 +94,15 @@ public class InlineKeyboardsMarkupStorage
                 BotButtonsStorage.AddOneInMenuAnotherLinkAdd.CallBackData),
         }
     });
+    
+    public static InlineKeyboardMarkup BackwardToChooseCategoryInLinksShow = new(new[]
+    {
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.BackwardToChooseCategoryInLinksShow.Name,
+                BotButtonsStorage.BackwardToChooseCategoryInLinksShow.CallBackData),
+        },
+    });
 
     public static InlineKeyboardMarkup CreateMenuLinkCategoryShow(
         IEnumerable<LinkCategory> linkCategories)
@@ -290,4 +299,14 @@ public class InlineKeyboardsMarkupStorage
 
         return new InlineKeyboardMarkup(keyboardMarkup);
     }
+    
+    
+    public static InlineKeyboardMarkup BackwardToChooseCategoryInDeleteLink = new(new[]
+    {
+        new[]
+        {
+            InlineKeyboardButton.WithCallbackData(BotButtonsStorage.ButtonNoLinksInChooseCategoryInDeleteLink.Name,
+                BotButtonsStorage.ButtonNoLinksInChooseCategoryInDeleteLink.CallBackData),
+        },
+    });
 }

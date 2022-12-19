@@ -17,9 +17,12 @@ public enum State
     
     ClickLinkCategoryShow,
     ClickLinkCategoryLinksShow,
+    ClickBackwardCategoryLinksShow,
+
     
     ClickInMenuDelete,
     ClickMenuCategoryDelete,
     ClickLinkCategoryLinksDelete,
-    ClickChosenLinkDelete
+    ClickChosenLinkDelete,
+    ClickBackwardToChooseCategoryDelete
 }

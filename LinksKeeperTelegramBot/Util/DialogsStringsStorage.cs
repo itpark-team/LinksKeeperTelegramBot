@@ -52,8 +52,13 @@ public class DialogsStringsStorage
     public const string MenuDelete = "Выберите, что вы хотите удалить?";
     
     public const string MenuDeleteCategory = "Выберите, категорию, которую вы хотите удалить или вернитесь назад";
+    public const string MenuDeleteCategoryMinOneCategory = "Нельзя удалить категорию. Т.к. у Вас должна остаться минимум одна категория";
+    
+    public const string MenuDeleteCategoryUseInLink = "Ошибка при удалении категории. Категория используется в существующей ссылке";
     
     public const string MenuDeleteLink = "Выберите, категорию, ссылки в которой вы хотите удалить";
     
     public const string MenuDeleteNoCategories = "У вас нет ещё ни одной добавленной ссылки, пожалуйста для удаления вначале добавьте ссылку";
+    
+    public const string MenuDeleteNoLinksInCategory = "У вас нет ещё ни одной добавленной ссылки в данной категории, пожалуйста вначале добавьте ссылку";
 }

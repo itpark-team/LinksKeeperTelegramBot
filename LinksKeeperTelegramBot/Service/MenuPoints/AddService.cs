@@ -75,7 +75,7 @@ public class AddService
             return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
-        throw new Exception("CallBackData не распознана");
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 
     public BotTextMessage ProcessInputLinkUrlAdd(string url, TransmittedData transmittedData)
@@ -126,7 +126,7 @@ public class AddService
     {
         if (!categoryIdAsString.StartsWith(SystemStringsStorage.LinkCategoryIdText))
         {
-            throw new Exception("LinkCategoryId не распознан");
+            throw new Exception(SystemStringsStorage.ErrorWithLinkCategoryIdText);
         }
 
         categoryIdAsString = categoryIdAsString.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
@@ -194,7 +194,7 @@ public class AddService
             return new BotTextMessage(DialogsStringsStorage.LinkInputUrl);
         }
 
-        throw new Exception("Bad user request");
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 
     public BotTextMessage ProcessInputCategoryAdd(string categoryName, TransmittedData transmittedData)
@@ -231,7 +231,7 @@ public class AddService
             return DisplayCategories(transmittedData);
         }
 
-        throw new Exception("Bad user request");
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 
     public BotTextMessage ProcessClickInMenuCategoryAdd(string callBackData,
@@ -242,6 +242,6 @@ public class AddService
             return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
-        throw new Exception("Bad user request");
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 }

@@ -67,6 +67,6 @@ public class MainMenuService
                 InlineKeyboardsMarkupStorage.MenuDelete
             );
         }
-        throw new Exception("CallBackData не распознана");
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 }

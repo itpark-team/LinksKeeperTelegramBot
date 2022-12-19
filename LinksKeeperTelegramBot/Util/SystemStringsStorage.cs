@@ -38,5 +38,8 @@ public class SystemStringsStorage
     public const string DbUsernameTest = "links_keeper_user_test";
     public const string DbPasswordTest = "12345";
     public const string DbDatabasenameTest = "links_keeper_db_test";
-    
+
+    public const string ErrorWithButtonText = "CallBackData не распознана";
+    public const string ErrorWithLinkCategoryIdText = "LinkCategoryId не распознан";
+
 }

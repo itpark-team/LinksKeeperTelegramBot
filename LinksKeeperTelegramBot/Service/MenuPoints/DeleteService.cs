@@ -110,7 +110,7 @@ public class DeleteService
             return SharedService.GotoProcessClickInMenuMain(transmittedData);
         }
 
-        throw new Exception("Bad user request");
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 
     public BotTextMessage ProcessClickMenuCategoryDelete(string callBackData,
@@ -128,7 +128,7 @@ public class DeleteService
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))
         {
-            throw new Exception("Bad user request");
+            throw new Exception(SystemStringsStorage.ErrorWithButtonText);
         }
 
         callBackData = callBackData.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
@@ -139,7 +139,7 @@ public class DeleteService
 
         if (tableLinksCategories.GetAllByChatId(transmittedData.ChatId).Count() == Constants.MinLinksCategoriesCount)
         {
-            return new BotTextMessage("Нельзя удалить категорию. Т.к. у Вас должна остаться минимум одна категория");
+            return new BotTextMessage(DialogsStringsStorage.MenuDeleteCategoryMinOneCategory);
         }
 
         try
@@ -153,9 +153,9 @@ public class DeleteService
                 InlineKeyboardsMarkupStorage.CreateMenuCategoryDelete(linkCategories)
             );
         }
-        catch (Exception e)
+        catch
         {
-            return new BotTextMessage("Ошибка при удалении категории. Категория используется в существующей ссылке");
+            return new BotTextMessage(DialogsStringsStorage.MenuDeleteCategoryUseInLink);
         }
     }
 
@@ -174,7 +174,7 @@ public class DeleteService
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))
         {
-            throw new Exception("Bad user request");
+            throw new Exception(SystemStringsStorage.ErrorWithButtonText);
         }
 
         callBackData = callBackData.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
@@ -184,9 +184,46 @@ public class DeleteService
         transmittedData.DataStorage.AddOrUpdate(SystemStringsStorage.DataStorageKeyLinkCategoryIdForDelete, categoryId);
 
         IEnumerable<Link> links = _dbManager.TableLinks.GetAllByCategoryId(categoryId);
+        
 
-        transmittedData.State = State.ClickChosenLinkDelete;
-        return LinksToText(transmittedData, links);
+        if (links.Count() != 0)
+        {
+            transmittedData.State = State.ClickChosenLinkDelete;
+            return LinksToText(transmittedData, links);
+        }
+        else
+        {
+            transmittedData.State = State.ClickBackwardToChooseCategoryDelete;
+            
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuDeleteNoLinksInCategory,
+                InlineKeyboardsMarkupStorage.BackwardToChooseCategoryInDeleteLink
+            );
+        }
+    }
+
+    public BotTextMessage ProcessClickBackwardToChooseCategoryDelete(string callBackData,
+        TransmittedData transmittedData)
+    {
+        if (callBackData == BotButtonsStorage.ButtonNoLinksInChooseCategoryInDeleteLink.CallBackData)
+        {
+            if (_dbManager.TableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
+            {
+                return new BotTextMessage(DialogsStringsStorage.MenuDeleteNoCategories);
+            }
+
+            transmittedData.State = State.ClickLinkCategoryLinksDelete;
+
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuDeleteLink,
+                InlineKeyboardsMarkupStorage.CreateMenuLinkCategoryLinkDelete(linkCategories)
+            );
+        }
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 
     public BotTextMessage ProcessClickChosenLinkDelete(string callBackData,
@@ -221,7 +258,7 @@ public class DeleteService
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkIdText))
         {
-            throw new Exception("Bad user request");
+            throw new Exception(SystemStringsStorage.ErrorWithButtonText);
         }
 
         callBackData = callBackData.Remove(0, SystemStringsStorage.LinkIdText.Length);

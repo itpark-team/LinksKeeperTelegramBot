@@ -71,7 +71,7 @@ public class ShowService
 
         if (!callBackData.StartsWith(SystemStringsStorage.LinkCategoryIdText))
         {
-            throw new Exception("LinkCategoryId не распознан");
+            throw new Exception(SystemStringsStorage.ErrorWithLinkCategoryIdText);
         }
         
         callBackData = callBackData.Remove(0, SystemStringsStorage.LinkCategoryIdText.Length);
@@ -87,11 +87,36 @@ public class ShowService
         }
         else
         {
-            
+            transmittedData.State = State.ClickBackwardCategoryLinksShow;
             return new BotTextMessage(
-                DialogsStringsStorage.MenuShowNoLinksInCategory
+                DialogsStringsStorage.MenuShowNoLinksInCategory,
+                InlineKeyboardsMarkupStorage.BackwardToChooseCategoryInLinksShow
             );
         }
+    }
+
+    public BotTextMessage ProcessClickBackwardCategoryLinksShow(string callBackData,
+        TransmittedData transmittedData)
+    {
+        if (callBackData == BotButtonsStorage.BackwardToChooseCategoryInLinksShow.CallBackData)
+        {
+            ITableLinksCategories tableLinksCategories = _dbManager.TableLinksCategories;
+            
+            if (tableLinksCategories.ContaintByChatId(transmittedData.ChatId) == false)
+            {
+                return new BotTextMessage(DialogsStringsStorage.MenuShowNoCategories);
+            }
+
+            transmittedData.State = State.ClickLinkCategoryShow;
+            
+            IEnumerable<LinkCategory> linkCategories = tableLinksCategories.GetAllByChatId(transmittedData.ChatId);
+
+            return new BotTextMessage(
+                DialogsStringsStorage.MenuShow,
+                InlineKeyboardsMarkupStorage.CreateMenuLinkCategoryShow(linkCategories)
+            );
+        }
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 
     public BotTextMessage ProcessClickLinkCategoryLinksShow(string callBackData,
@@ -126,6 +151,6 @@ public class ShowService
             return LinksToText(transmittedData, links);
         }
 
-        throw new Exception("CallBackData не распознана");
+        throw new Exception(SystemStringsStorage.ErrorWithButtonText);
     }
 }

@@ -33,6 +33,8 @@ public class BotButtonsStorage
     #region ButtonsInShowLinks 
     public static BotButton BackwardInLinksShow { get; } = new BotButton("Назад", "BackwardInLinksShow");
     public static BotButton MoreInLinksShow { get; } = new BotButton("Ещё", "MoreInLinksShow");
+    
+    public static BotButton BackwardToChooseCategoryInLinksShow { get; } = new BotButton("Назад", "BackwardToChooseCategoryInLinksShow");
     #endregion
     
     #region ButtonsInMenuAddAnotherCategory
@@ -56,6 +58,8 @@ public class BotButtonsStorage
     
     #region ButtonsInChooseCategoryInDeleteLink
     public static BotButton ButtonInChooseCategoryInDeleteLink { get; } = new BotButton("Назад", "ButtonsInChooseCategoryInDeleteLink");
+    
+    public static BotButton ButtonNoLinksInChooseCategoryInDeleteLink { get; } = new BotButton("Назад", "ButtonNoLinksInChooseCategoryInDeleteLink");
     
     #endregion
     

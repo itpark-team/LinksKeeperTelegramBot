@@ -89,6 +89,7 @@ public class ServicesManager
         _methods[State.ClickLinkCategoryLinksShow] =
             _showService.ProcessClickLinkCategoryLinksShow;
 
+        _methods[State.ClickBackwardCategoryLinksShow] = _showService.ProcessClickBackwardCategoryLinksShow;
         #endregion
 
         #region MenuPointDeleteServices
@@ -105,6 +106,8 @@ public class ServicesManager
 
         _methods[State.ClickChosenLinkDelete] =
             _deleteService.ProcessClickChosenLinkDelete;
+
+        _methods[State.ClickBackwardToChooseCategoryDelete] = _deleteService.ProcessClickBackwardToChooseCategoryDelete;
 
         #endregion
     }
