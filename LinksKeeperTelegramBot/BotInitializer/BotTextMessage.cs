@@ -7,13 +7,13 @@ public class BotTextMessage
 {
     public string Text { get; }
     public InlineKeyboardMarkup InlineKeyboardMarkup { get; }
-    
+
     public BotTextMessage(string text)
     {
         Text = text;
-        InlineKeyboardMarkup = InlineKeyboardMarkup.Empty();
+        InlineKeyboardMarkup = null;
     }
-    
+
     public BotTextMessage(string text, InlineKeyboardMarkup inlineKeyboardMarkup)
     {
         Text = text;

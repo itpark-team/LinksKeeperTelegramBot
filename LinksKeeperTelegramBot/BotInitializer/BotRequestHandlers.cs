@@ -1,3 +1,4 @@
+using System.Text;
 using LinksKeeperTelegramBot.Router;
 using LinksKeeperTelegramBot.Util;
 using NLog;
@@ -5,6 +6,7 @@ using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace LinksKeeperTelegramBot.BotInitializer;
 
@@ -36,7 +38,6 @@ public class BotRequestHandlers
                     chatId = update.Message.Chat.Id;
                     messageId = update.Message.MessageId;
                     textData = update.Message.Text;
-                    
                 }
 
                 break;
@@ -52,8 +53,9 @@ public class BotRequestHandlers
 
                 break;
         }
-        
-        Logger.Info($"ВХОДЯЩЕЕ СОООБЩЕНИЕ UpdateType = {update.Type}; chatId = {chatId}; messageId = {messageId}; text = {textData} canRoute = {canRoute}");
+
+        Logger.Info(
+            $"ВХОДЯЩЕЕ СОООБЩЕНИЕ UpdateType = {update.Type}; chatId = {chatId}; messageId = {messageId}; text = {textData} canRoute = {canRoute}");
 
         if (canRoute)
         {
@@ -62,8 +64,23 @@ public class BotRequestHandlers
                 BotTextMessage botTextMessage =
                     await Task.Run(() => _chatsRouter.Route(chatId, textData), cancellationToken);
 
-                Logger.Info($"ИСХОДЯЩЕЕ СОООБЩЕНИЕ chatId = {chatId}; text = {botTextMessage.Text.Replace("\n"," ")}; Keyboard = ???");
-                
+                String keyboardAsString = "Клавиатуры в данном сообщении нет";
+                InlineKeyboardMarkup keyboard = botTextMessage.InlineKeyboardMarkup;
+                if (keyboard != null)
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    foreach (var row in keyboard.InlineKeyboard)
+                    {
+                        stringBuilder.Append(row.ToList()[0].Text + ";");
+                    }
+
+                    keyboardAsString = stringBuilder.ToString();
+                }
+
+                Logger.Info(
+                    $"ИСХОДЯЩЕЕ СОООБЩЕНИЕ chatId = {chatId}; text = {botTextMessage.Text.Replace("\n", " ")}; Keyboard = {keyboardAsString}");
+
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
                     text: botTextMessage.Text,
