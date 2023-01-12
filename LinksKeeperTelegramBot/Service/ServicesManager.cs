@@ -23,14 +23,10 @@ public class ServicesManager
     
     public ServicesManager()
     {
-        DbConnector dbConnector = new DbConnector(
-            SystemStringsStorage.DbHost,
-            SystemStringsStorage.DbUsername,
-            SystemStringsStorage.DbPassword,
-            SystemStringsStorage.DbDatabasename);
+        LinksKeeperDbContext dbContext = new LinksKeeperDbContext();
 
-        ITableLinks tableLinks = new TableLinks(dbConnector.Connection);
-        ITableLinksCategories tableLinksCategories = new TableLinksCategories(dbConnector.Connection);
+        ITableLinks tableLinks = new EfTableLinks(dbContext);
+        ITableLinksCategories tableLinksCategories = new EfTableLinksCategories(dbContext);
 
         DbManager dbManager = new DbManager(tableLinks, tableLinksCategories);
 
