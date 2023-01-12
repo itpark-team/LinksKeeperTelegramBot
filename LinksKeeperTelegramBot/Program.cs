@@ -1,21 +1,23 @@
 ﻿using LinksKeeperTelegramBot.BotInitializer;
 
-ManualResetEvent exitEvent = new ManualResetEvent(false);
-
-Console.CancelKeyPress += (sender, eventArgs) => {
-    eventArgs.Cancel = true;
-    exitEvent.Set();
-};
-
 Bot bot = new Bot();
 bot.Start();
+
+TaskCompletionSource tcs = new TaskCompletionSource();
+
+AppDomain.CurrentDomain.ProcessExit += (_, _) =>
+{
+    bot.Stop();
+    Console.WriteLine("Bot stopped");
+    tcs.SetResult();
+};
 
 Console.WriteLine($"Bot @{bot.GetBotName()} started");
 Console.WriteLine("Press Ctrl+C for stop");
 
-exitEvent.WaitOne();
+await tcs.Task;
 
-bot.Stop();
+Console.WriteLine("program finished");
 
 
 
